@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\auth;
 
 use App\Models\User;
+use App\Models\Karyawan;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -26,7 +27,7 @@ class AuthController extends Controller
         $request->validate(
             [
                 'name' => 'required|string|max:255',
-                'email' => 'required|unique:users,email',
+                'email' => 'required|email|unique:users,email',
                 'password' => 'required|min:6|confirmed',
             ],
             [
@@ -47,6 +48,16 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
             'role' => 'karyawan', // default
         ]);
+
+        // Buat data karyawan otomatis untuk user dengan role karyawan
+        if ($user->role === 'karyawan') {
+            Karyawan::create([
+                'user_id' => $user->id,
+                'nama' => $user->name,
+                'email' => $user->email,
+                'no_hp' => null,
+            ]);
+        }
 
         // Auto Login (harus setelah create)
         Auth::login($user);
@@ -76,24 +87,28 @@ class AuthController extends Controller
         // Validasi
         $request->validate(
             [
-                'email' => 'required',
+                'email' => 'required|email',
                 'password' => 'required|min:6',
             ],
             [
                 'email.required' => 'Email wajib diisi.',
+                'email.email' => 'Format email tidak valid.',
                 'password.required' => 'Password wajib diisi.',
                 'password.min' => 'Password minimal 6 karakter.',
             ],
         );
 
         // Cek kredensial
-        if (!Auth::attempt($request->only('email', 'password'))) {
+        if (!Auth::attempt($request->only('email', 'password'), $request->filled('remember'))) {
             return back()
                 ->withErrors([
                     'login' => 'Email atau password salah.',
                 ])
-                ->withInput();
+                ->withInput($request->only('email'));
         }
+
+        // Regenerate session untuk keamanan
+        $request->session()->regenerate();
 
         // Ambil user
         $user = Auth::user();
@@ -113,5 +128,23 @@ class AuthController extends Controller
                 'user' => $user,
             ]);
         }
+    }
+
+    /**
+     * LOGOUT
+     */
+    public function logout(Request $request)
+    {
+        // Logout user
+        Auth::logout();
+
+        // Invalidate session
+        $request->session()->invalidate();
+
+        // Regenerate CSRF token
+        $request->session()->regenerateToken();
+
+        // Redirect ke halaman login
+        return redirect()->route('login')->with('success', 'Anda telah berhasil keluar.');
     }
 }

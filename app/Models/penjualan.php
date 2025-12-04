@@ -4,20 +4,25 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\ProduksiTelur;
 
-class penjualan extends Model
+class Penjualan extends Model
 {
     use HasFactory;
-    protected $table = 'penjualan';
-    protected $fillable = ['produk_id', 'tanggal', 'jumlah_terjual', 'harga_per_kg', 'total'];
 
+    protected $table = 'penjualans';
 
-    public function produk()
+    protected $fillable = [
+        'produksi_id',
+        'tanggal',
+        'jumlah_terjual',
+        'harga_per_kg',
+        'total'
+    ];
+
+    // RELASI WAJIB ADA UNTUK MENGHINDARI ERROR
+    public function produksiTelur()
     {
-        return $this->belongsTo(ProduksiTelur::class, 'produk_id');
-    }
-    public function details()
-    {
-        return $this->hasMany(DetailPenjualan::class, 'penjualan_id');
+        return $this->belongsTo(ProduksiTelur::class, 'produksi_id');
     }
 }

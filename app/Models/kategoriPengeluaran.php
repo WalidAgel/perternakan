@@ -5,19 +5,32 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class kategoriPengeluaran extends Model
+class KategoriPengeluaran extends Model
 {
     use HasFactory;
-    protected $table = 'kategori_pengeluaran';
-    protected $fillable = ['kategori_id', 'karyawan_id', 'tanggal', 'jumlah', 'deskripsi'];
 
+    protected $table = 'kategori_pengeluarans';
+
+    protected $fillable = [
+        'kategoris_id',
+        'karyawans_id',
+        'tanggal',
+        'jumlah',
+        'deskripsi'
+    ];
+
+    protected $casts = [
+        'tanggal' => 'date',
+        'jumlah' => 'decimal:2'
+    ];
 
     public function kategori()
     {
-        return $this->belongsTo(Kategori::class);
+        return $this->belongsTo(Kategori::class, 'kategoris_id');
     }
+
     public function karyawan()
     {
-        return $this->belongsTo(Karyawan::class);
+        return $this->belongsTo(Karyawan::class, 'karyawans_id');
     }
 }

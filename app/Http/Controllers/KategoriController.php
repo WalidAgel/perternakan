@@ -2,64 +2,55 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\kategori;
+use App\Models\Kategori;
 use Illuminate\Http\Request;
 
 class KategoriController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $kategoris = Kategori::all();
+        return view('Admin.Kategori.index', compact('kategoris'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        return view('Admin.Kategori.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nama_kategori' => 'required',
+            'deskripsi' => 'nullable'
+        ]);
+
+        Kategori::create($request->all());
+
+        return redirect()->route('Admin.Kategori.index')->with('success', 'Kategori berhasil ditambahkan');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(kategori $kategori)
+    public function edit(Kategori $kategori_pengeluaran)
     {
-        //
+        return view('Admin.Kategori.edit', ['kategori' => $kategori_pengeluaran]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(kategori $kategori)
+    public function update(Request $request, Kategori $kategori_pengeluaran)
     {
-        //
+        $request->validate([
+            'nama_kategori' => 'required',
+            'deskripsi' => 'nullable'
+        ]);
+
+        $kategori_pengeluaran->update($request->all());
+
+        return redirect()->route('Admin.Kategori.index')->with('success', 'Kategori berhasil diperbarui');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, kategori $kategori)
+    public function destroy(Kategori $kategori_pengeluaran)
     {
-        //
-    }
+        $kategori_pengeluaran->delete();
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(kategori $kategori)
-    {
-        //
+        return redirect()->route('Admin.Kategori.index')->with('success', 'Kategori berhasil dihapus');
     }
 }

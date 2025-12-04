@@ -3,60 +3,85 @@
 namespace App\Http\Controllers;
 
 use App\Models\ProduksiTelur;
+use App\Models\Karyawan;
 use Illuminate\Http\Request;
-
 
 class ProduksiTelurController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return ProduksiTelur::with('karyawan')->paginate(15);
+        $query = ProduksiTelur::with('karyawan');
+
+        // Filter Tanggal
+        if ($request->filled('tanggal')) {
+            $query->where('tanggal', $request->tanggal);
+        }
+
+        // Filter karyawan
+        if ($request->filled('karyawan_id')) {
+            $query->where('karyawans_id', $request->karyawan_id);
+        }
+
+        return view('admin.produksi.index', [
+            'produksi' => $query->get(),
+            'karyawans' => Karyawan::all()
+        ]);
     }
 
+    public function create()
+    {
+        return view('admin.produksi.create', [
+            'karyawans' => Karyawan::all()
+        ]);
+    }
 
     public function store(Request $request)
     {
-        $data = $request->validate([
-            'karyawan_id' => 'required|exists:karyawan,id',
+        $request->validate([
+            'karyawans_id' => 'required',
             'tanggal' => 'required|date',
             'jumlah' => 'required|numeric',
-            'kualitas' => 'nullable|string',
-            'keterangan' => 'nullable|string',
+            'kualitas' => 'required',
+            'keterangan' => 'nullable'
         ]);
 
+        ProduksiTelur::create($request->all());
 
-        $produksi = ProduksiTelur::create($data);
-        return response()->json($produksi, 201);
+        return redirect()->route('admin.produksi.index')
+            ->with('success', 'Produksi telur berhasil ditambahkan!');
     }
 
-
-    public function show(ProduksiTelur $produksiTelur)
+    public function edit($id)
     {
-        return $produksiTelur->load('karyawan');
+        return view('admin.produksi.edit', [
+            'data' => ProduksiTelur::findOrFail($id),
+            'karyawans' => Karyawan::all()
+        ]);
     }
 
-
-    public function update(Request $request, ProduksiTelur $produksiTelur)
+    public function update(Request $request, $id)
     {
-        $data = $request->validate([
-            'karyawan_id' => 'sometimes|exists:karyawan,id',
-            'tanggal' => 'sometimes|date',
-            'jumlah' => 'sometimes|numeric',
-            'kualitas' => 'nullable|string',
-            'keterangan' => 'nullable|string',
+        $data = ProduksiTelur::findOrFail($id);
+
+        $request->validate([
+            'karyawans_id' => 'required',
+            'tanggal' => 'required|date',
+            'jumlah' => 'required|numeric',
+            'kualitas' => 'required',
+            'keterangan' => 'nullable'
         ]);
 
+        $data->update($request->all());
 
-        $produksiTelur->update($data);
-        return response()->json($produksiTelur);
+        return redirect()->route('admin.produksi.index')
+            ->with('success', 'Data produksi berhasil diperbarui!');
     }
 
-
-    public function destroy(ProduksiTelur $produksiTelur)
+    public function destroy($id)
     {
-        $produksiTelur->delete();
-        return response()->noContent();
+        ProduksiTelur::destroy($id);
+
+        return redirect()->route('admin.produksi.index')
+            ->with('success', 'Data produksi berhasil dihapus!');
     }
 }
-
-
