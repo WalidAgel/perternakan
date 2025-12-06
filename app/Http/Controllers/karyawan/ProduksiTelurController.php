@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\karyawan;
 
-use App\Models\ProduksiTelur;
+use Carbon\Carbon;
 use App\Models\Karyawan;
 use Illuminate\Http\Request;
-use Carbon\Carbon;
+use App\Models\ProduksiTelur;
+use App\Http\Controllers\Controller;
 
 class ProduksiTelurController extends Controller
 {

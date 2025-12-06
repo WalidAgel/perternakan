@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;;
 
-use App\Models\DetailPenjualan;
 use App\Models\Penjualan;
 use Illuminate\Http\Request;
+use App\Models\DetailPenjualan;
+use App\Http\Controllers\Controller;
 
 class DetailPenjualanController extends Controller
 {

@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\karyawan;
 
-use App\Models\Karyawan;
 use App\Models\User;
+use App\Models\Karyawan;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
 class KaryawanController extends Controller

@@ -10,7 +10,7 @@
     @include('Layout.sidebar')
 
     {{-- KONTEN HALAMAN --}}
-    <main class="flex-1 p-6">
+    <main class="flex-1 p-1">
         @yield('content')
     </main>
 

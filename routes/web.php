@@ -2,14 +2,16 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\KaryawanController;
-use App\Http\Controllers\UserController;
+// use App\Http\Controllers\Karyawan\KaryawanController AS KaryawanProduksiTelurController;
+use App\Http\Controllers\Karyawan\ProduksiTelurController AS KaryawanProduksiTelurController;
+use App\Http\Controllers\Admin\KaryawanController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\auth\AuthController;
-use App\Http\Controllers\KategoriController;
-use App\Http\Controllers\KategoriPengeluaranController;
-use App\Http\Controllers\PenjualanController;
-use App\Http\Controllers\ProduksiTelurController;
-use App\Http\Controllers\LaporanController;
+use App\Http\Controllers\Admin\KategoriController;
+use App\Http\Controllers\Admin\KategoriPengeluaranController;
+use App\Http\Controllers\Admin\PenjualanController;
+use App\Http\Controllers\Admin\ProduksiTelurController;
+use App\Http\Controllers\Admin\LaporanController;
 
 // ===============================
 // AUTH ROUTES (PUBLIC)
@@ -38,11 +40,11 @@ Route::prefix('karyawan')->name('karyawan.')->middleware('auth')->group(function
     })->name('dashboard');
 
     // Input Produksi
-    Route::get('/produksi', [ProduksiTelurController::class, 'index'])->name('produksi.index');
-    Route::post('/produksi', [ProduksiTelurController::class, 'store'])->name('produksi.store');
-    Route::get('/produksi/{id}/edit', [ProduksiTelurController::class, 'edit'])->name('produksi.edit');
-    Route::put('/produksi/{id}', [ProduksiTelurController::class, 'update'])->name('produksi.update');
-    Route::delete('/produksi/{id}', [ProduksiTelurController::class, 'destroy'])->name('produksi.destroy');
+    Route::get('/produksi', [KaryawanProduksiTelurController::class, 'index'])->name('produksi.index');
+    Route::post('/produksi', [KaryawanProduksiTelurController::class, 'store'])->name('produksi.store');
+    Route::get('/produksi/{id}/edit', [KaryawanProduksiTelurController::class, 'edit'])->name('produksi.edit');
+    Route::put('/produksi/{id}', [KaryawanProduksiTelurController::class, 'update'])->name('produksi.update');
+    Route::delete('/produksi/{id}', [KaryawanProduksiTelurController::class, 'destroy'])->name('produksi.destroy');
 
     // Input Pengeluaran
     Route::get('/pengeluaran', [KategoriPengeluaranController::class, 'index'])->name('pengeluaran.index');
