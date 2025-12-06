@@ -2,9 +2,10 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
 use App\Models\User;
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
+
 class UserSeeder extends Seeder
 {
     /**
@@ -14,21 +15,33 @@ class UserSeeder extends Seeder
     {
         $users = [
             [
-                'name' => 'Admin User',
-                'email' => 'admin@gmail.com',
-                'password' => bcrypt('password'),
+                'name' => 'Administrator',
+                'email' => 'admin@peternakan.com',
+                'password' => Hash::make('admin123'),
                 'role' => 'admin',
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
-                'name' => 'User',
-                'email' => 'user@gmail.com',
-                'password' => bcrypt('password'),
+                'name' => 'Budi Santoso',
+                'email' => 'budi@peternakan.com',
+                'password' => Hash::make('karyawan123'),
                 'role' => 'karyawan',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'name' => 'Siti Aminah',
+                'email' => 'siti@peternakan.com',
+                'password' => Hash::make('karyawan123'),
+                'role' => 'karyawan',
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
         ];
 
-        foreach ($users as $user) {
-            User::create($user);
-        }
+        User::insert($users);
+
+        $this->command->info('✓ Users: ' . count($users) . ' records seeded successfully!');
     }
 }

@@ -6,7 +6,7 @@
     <div class="flex justify-between items-center mb-6">
         <h1 class="text-2xl font-bold text-gray-800">Daftar Karyawan</h1>
 
-        <a href="{{ route('karyawan.create') }}"
+        <a href="{{ route('admin.karyawan.create') }}"
             class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
             + Tambah Karyawan
         </a>
@@ -33,12 +33,12 @@
                         <td class="py-3 px-2">{{ $k->user->role }}</td>
 
                         <td class="py-3 px-2 flex gap-2 justify-center">
-                            <a href="{{ route('karyawan.edit', $k->id) }}"
+                            <a href="{{ route('admin.karyawan.edit', $k->id) }}"
                                 class="bg-yellow-500 text-white px-3 py-1 rounded">
                                 Edit
                             </a>
 
-                            <form action="{{ route('karyawan.destroy', $k->id) }}" method="POST"
+                            <form action="{{ route('admin.karyawan.destroy', $k->id) }}" method="POST"
                                 onsubmit="return confirm('Hapus data ini?')">
                                 @csrf
                                 @method('DELETE')

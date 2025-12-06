@@ -13,6 +13,14 @@ class AuthController extends Controller
 {
     public function index()
     {
+        // Jika sudah login, redirect sesuai role
+        if (Auth::check()) {
+            if (Auth::user()->role === 'admin') {
+                return redirect()->route('admin.dashboard');
+            }
+            return redirect()->route('karyawan.dashboard');
+        }
+
         return view('auth.login');
     }
 
@@ -23,128 +31,70 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
-        // Validasi
-        $request->validate(
-            [
-                'name' => 'required|string|max:255',
-                'email' => 'required|email|unique:users,email',
-                'password' => 'required|min:6|confirmed',
-            ],
-            [
-                'name.required' => 'Nama wajib diisi.',
-                'email.required' => 'Email wajib diisi.',
-                'email.email' => 'Format email tidak valid.',
-                'email.unique' => 'Email sudah terdaftar.',
-                'password.required' => 'Password wajib diisi.',
-                'password.min' => 'Password minimal 6 karakter.',
-                'password.confirmed' => 'Konfirmasi password tidak sesuai.',
-            ],
-        );
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|min:6|confirmed',
+        ]);
 
-        // Simpan user
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => 'karyawan', // default
+            'role' => 'karyawan',
         ]);
 
-        // Buat data karyawan otomatis untuk user dengan role karyawan
-        if ($user->role === 'karyawan') {
-            Karyawan::create([
-                'user_id' => $user->id,
-                'nama' => $user->name,
-                'email' => $user->email,
-                'no_hp' => null,
-            ]);
-        }
-
-        // Auto Login (harus setelah create)
-        Auth::login($user);
-
-        // Buat pesan selamat datang
-        $welcome = "Selamat datang {$user->role} {$user->name}";
-
-        // Redirect langsung ke view
-        if ($user->role === 'admin') {
-            return view('admin.dashboard', [
-                'success' => $welcome,
-                'user' => $user,
-            ]);
-        }
-
-        return view('user.dashboard', [
-            'success' => $welcome,
-            'user' => $user,
+        Karyawan::create([
+            'user_id' => $user->id,
+            'nama' => $user->name,
+            'email' => $user->email,
         ]);
+
+        return redirect()->route('login')->with('success', 'Registrasi berhasil, silakan login.');
     }
 
-    /**
-     * LOGIN
-     */
     public function login(Request $request)
     {
-        // Validasi
-        $request->validate(
-            [
-                'email' => 'required|email',
-                'password' => 'required|min:6',
-            ],
-            [
-                'email.required' => 'Email wajib diisi.',
-                'email.email' => 'Format email tidak valid.',
-                'password.required' => 'Password wajib diisi.',
-                'password.min' => 'Password minimal 6 karakter.',
-            ],
-        );
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|min:6'
+        ], [
+            'email.required' => 'Email wajib diisi',
+            'email.email' => 'Format email tidak valid',
+            'password.required' => 'Password wajib diisi',
+            'password.min' => 'Password minimal 6 karakter'
+        ]);
 
-        // Cek kredensial
-        if (!Auth::attempt($request->only('email', 'password'), $request->filled('remember'))) {
-            return back()
-                ->withErrors([
-                    'login' => 'Email atau password salah.',
-                ])
-                ->withInput($request->only('email'));
+        $credentials = $request->only('email', 'password');
+
+        if (!Auth::attempt($credentials, $request->filled('remember'))) {
+            return back()->withErrors([
+                'login' => 'Email atau password salah'
+            ])->withInput($request->only('email'));
         }
 
-        // Regenerate session untuk keamanan
         $request->session()->regenerate();
-
-        // Ambil user
         $user = Auth::user();
 
-        // Pesan welcome
-        $welcome = "Selamat datang {$user->role} {$user->name}";
-
-        // Redirect berdasarkan role
+        // REDIRECT BERDASARKAN ROLE - STRICT
         if ($user->role === 'admin') {
-            return view('admin.dashboard', [
-                'success' => $welcome,
-                'user' => $user,
-            ]);
-        } else {
-            return view('user.dashboard', [
-                'success' => $welcome,
-                'user' => $user,
-            ]);
+            return redirect()->route('admin.dashboard');
+        } elseif ($user->role === 'karyawan') {
+            return redirect()->route('karyawan.dashboard');
         }
+
+        // Jika role tidak dikenali, logout paksa
+        Auth::logout();
+        return redirect()->route('login')->withErrors(['login' => 'Role tidak valid']);
     }
 
-    /**
-     * LOGOUT
-     */
     public function logout(Request $request)
     {
-        // Logout user
         Auth::logout();
 
-        // Invalidate session
         $request->session()->invalidate();
-
-        // Regenerate CSRF token
         $request->session()->regenerateToken();
 
-        // Redirect ke halaman login
-        return redirect()->route('login')->with('success', 'Anda telah berhasil keluar.');
+        return redirect()->route('login')->with('success', 'Berhasil logout.');
     }
 }
