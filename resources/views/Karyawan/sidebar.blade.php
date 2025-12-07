@@ -15,7 +15,7 @@
         function toggleSidebar() {
             const sidebar = document.getElementById("sidebar");
             const overlay = document.getElementById("sidebar-overlay");
-            
+
             sidebar.classList.toggle("-translate-x-full");
             overlay.classList.toggle("hidden");
         }
@@ -85,55 +85,8 @@
                 <span>Pengeluaran</span>
             </a>
 
-            <!-- RIWAYAT DROPDOWN -->
-            <div x-data="{ open: {{ request()->routeIs('karyawan.riwayat.*') ? 'true' : 'false' }} }">
-                <button @click="open = !open"
-                    class="w-full flex items-center justify-between px-4 py-3 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition"
-                    :class="open ? 'bg-blue-50 text-blue-600' : ''">
-                    <div class="flex items-center gap-3">
-                        <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        <span>Riwayat</span>
-                    </div>
-                    <svg class="w-4 h-4 flex-shrink-0 transition-transform" :class="open ? 'rotate-180' : ''" fill="none"
-                        stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                    </svg>
-                </button>
-
-                <div x-show="open" 
-                    x-transition:enter="transition ease-out duration-200"
-                    x-transition:enter-start="opacity-0 transform scale-95"
-                    x-transition:enter-end="opacity-100 transform scale-100"
-                    x-transition:leave="transition ease-in duration-150"
-                    x-transition:leave-start="opacity-100 transform scale-100"
-                    x-transition:leave-end="opacity-0 transform scale-95" 
-                    class="ml-8 mt-2 flex flex-col space-y-1">
-
-                    <a href="{{ route('karyawan.riwayat.produksi') }}"
-                        class="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition {{ request()->routeIs('karyawan.riwayat.produksi') ? 'bg-blue-100 text-blue-600 font-semibold' : '' }}">
-                        <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                        </svg>
-                        <span>Riwayat Produksi</span>
-                    </a>
-
-                    <a href="{{ route('karyawan.riwayat.pengeluaran') }}"
-                        class="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition {{ request()->routeIs('karyawan.riwayat.pengeluaran') ? 'bg-blue-100 text-blue-600 font-semibold' : '' }}">
-                        <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        <span>Riwayat Pengeluaran</span>
-                    </a>
-                </div>
-            </div>
-
             <!-- PROFIL -->
-            <a href="{{ route('karyawan.profil') }}"
+            <a href="{{ route('karyawan.profil.index') }}"
                 class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition {{ request()->routeIs('karyawan.profil') ? 'bg-blue-100 text-blue-600' : '' }}">
                 <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -164,8 +117,8 @@
     </aside>
 
     <!-- Overlay untuk mobile (ketika sidebar terbuka) -->
-    <div id="sidebar-overlay" 
-         onclick="toggleSidebar()" 
+    <div id="sidebar-overlay"
+         onclick="toggleSidebar()"
          class="fixed inset-0 bg-black bg-opacity-50 z-30 md:hidden hidden">
     </div>
 

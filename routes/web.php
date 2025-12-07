@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 // use App\Http\Controllers\Karyawan\KaryawanController AS KaryawanProduksiTelurController;
-use App\Http\Controllers\Karyawan\ProduksiTelurController AS KaryawanProduksiTelurController;
+use App\Http\Controllers\Karyawan\ProduksiTelurController as KaryawanProduksiTelurController;
 use App\Http\Controllers\Admin\KaryawanController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\auth\AuthController;
@@ -12,6 +12,8 @@ use App\Http\Controllers\Admin\KategoriPengeluaranController;
 use App\Http\Controllers\Admin\PenjualanController;
 use App\Http\Controllers\Admin\ProduksiTelurController;
 use App\Http\Controllers\Admin\LaporanController;
+use App\Http\Controllers\Karyawan\PengeluaranController;
+use App\Http\Controllers\Karyawan\ProfilController; // ← TAMBAHKAN INI
 
 // ===============================
 // AUTH ROUTES (PUBLIC)
@@ -47,23 +49,24 @@ Route::prefix('karyawan')->name('karyawan.')->middleware('auth')->group(function
     Route::delete('/produksi/{id}', [KaryawanProduksiTelurController::class, 'destroy'])->name('produksi.destroy');
 
     // Input Pengeluaran
-    Route::get('/pengeluaran', [KategoriPengeluaranController::class, 'index'])->name('pengeluaran.index');
-    Route::post('/pengeluaran', [KategoriPengeluaranController::class, 'store'])->name('pengeluaran.store');
-    Route::get('/pengeluaran/{pengeluaran}/edit', [KategoriPengeluaranController::class, 'edit'])->name('pengeluaran.edit');
-    Route::put('/pengeluaran/{pengeluaran}', [KategoriPengeluaranController::class, 'update'])->name('pengeluaran.update');
-    Route::delete('/pengeluaran/{pengeluaran}', [KategoriPengeluaranController::class, 'destroy'])->name('pengeluaran.destroy');
+    Route::get('/pengeluaran', [PengeluaranController::class, 'index'])->name('pengeluaran.index');
+    Route::get('/pengeluaran/create', [PengeluaranController::class, 'create'])->name('pengeluaran.create');
+    Route::post('/pengeluaran', [PengeluaranController::class, 'store'])->name('pengeluaran.store');
+    Route::get('/pengeluaran/{pengeluaran}/edit', [PengeluaranController::class, 'edit'])->name('pengeluaran.edit');
+    Route::put('/pengeluaran/{pengeluaran}', [PengeluaranController::class, 'update'])->name('pengeluaran.update');
+    Route::delete('/pengeluaran/{pengeluaran}', [PengeluaranController::class, 'destroy'])->name('pengeluaran.destroy');
 
     // Riwayat
     Route::get('/riwayat/produksi', [ProduksiTelurController::class, 'riwayat'])->name('riwayat.produksi');
-    Route::get('/riwayat/pengeluaran', [KategoriPengeluaranController::class, 'riwayat'])->name('riwayat.pengeluaran');
+    Route::get('/riwayat/pengeluaran', [PengeluaranController::class, 'riwayat'])->name('riwayat.pengeluaran');
 
-    // Profil
-    Route::get('/profil', function () {
-        if (Auth::check() && Auth::user()->role !== 'karyawan') {
-            abort(403, 'Anda tidak memiliki akses ke halaman ini.');
-        }
-        return view('karyawan.profil');
-    })->name('profil');
+    // Laporan Pengeluaran Karyawan
+    Route::get('/laporan/pengeluaran', [PengeluaranController::class, 'index'])->name('laporan.pengeluaran');
+
+    // Profil - GANTI BAGIAN INI
+    Route::get('/profil', [ProfilController::class, 'index'])->name('profil.index');
+    Route::put('/profil', [ProfilController::class, 'updateProfil'])->name('profil.update');
+    Route::put('/profil/password', [ProfilController::class, 'updatePassword'])->name('profil.update-password');
 });
 
 // ===============================
