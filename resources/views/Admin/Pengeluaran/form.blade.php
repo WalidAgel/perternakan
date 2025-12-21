@@ -38,6 +38,25 @@
     @enderror
 </div>
 
+<!-- Kandang -->
+<div class="mb-3">
+    <label class="block text-sm font-medium text-gray-700 mb-2">
+        Kandang (Opsional)
+    </label>
+    <select name="kandang_id"
+            class="w-full border p-2 rounded focus:outline-none focus:ring-2 focus:ring-orange-500 @error('kandang_id') border-red-500 @enderror">
+        <option value="">Pilih Kandang (opsional)</option>
+        @foreach($kandangs as $kd)
+        <option value="{{ $kd->id }}" {{ old('kandang_id', $pengeluaran->kandang_id ?? '') == $kd->id ? 'selected' : '' }}>
+            {{ $kd->nama_kandang }}
+        </option>
+        @endforeach
+    </select>
+    @error('kandang_id')
+    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+    @enderror
+</div>
+
 <!-- Tanggal -->
 <div class="mb-3">
     <label class="block text-sm font-medium text-gray-700 mb-2">

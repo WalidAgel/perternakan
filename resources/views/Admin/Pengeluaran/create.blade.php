@@ -73,6 +73,27 @@
                     @enderror
                 </div>
 
+                {{-- Kandang --}}
+                <div>
+                    <label for="kandang_id" class="block text-sm font-semibold text-gray-700 mb-2">
+                        Kandang (Opsional)
+                    </label>
+                    <select name="kandang_id" id="kandang_id"
+                        class="w-full px-4 py-3 border border-gray-300 rounded-xl
+                           focus:ring-2 focus:ring-orange-500 focus:border-orange-500
+                           @error('kandang_id') border-red-500 @enderror">
+                        <option value="">-- Pilih Kandang (opsional) --</option>
+                        @foreach ($kandangs as $item)
+                            <option value="{{ $item->id }}" {{ old('kandang_id') == $item->id ? 'selected' : '' }}>
+                                {{ $item->nama_kandang }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('kandang_id')
+                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
                 {{-- Tanggal --}}
                 <div>
                     <label for="tanggal" class="block text-sm font-semibold text-gray-700 mb-2">

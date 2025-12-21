@@ -13,8 +13,14 @@ use App\Http\Controllers\Admin\ProduksiTelurController;
 use App\Http\Controllers\Admin\LaporanController;
 use App\Http\Controllers\Karyawan\PengeluaranController;
 use App\Http\Controllers\Karyawan\ProfilController;
-use App\Http\Controllers\Admin\AdminController; // ⭐ TAMBAHKAN INI
-use App\Http\Controllers\Karyawan\KaryawanController as KaryawanDashboardController; // ⭐ TAMBAHKAN INI
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Karyawan\KaryawanController as KaryawanDashboardController;
+use App\Http\Controllers\Admin\KandangController;
+use App\Http\Controllers\Admin\PakanController;
+use App\Http\Controllers\Admin\OperasiKandangController;
+use App\Http\Controllers\Admin\PembelianPakanController;
+use App\Http\Controllers\Admin\PenggunaanPakanController;
+use App\Http\Controllers\Admin\PendapatanKandangController;
 
 // ===============================
 // AUTH ROUTES (PUBLIC)
@@ -88,6 +94,24 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
 
     // Kategori
     Route::resource('kategori', KategoriController::class)->except(['show']);
+
+    // Kandang
+    Route::resource('kandang', KandangController::class)->except(['show']);
+
+    // Pakan
+    Route::resource('pakan', PakanController::class)->except(['show']);
+
+    // Operasi Kandang
+    Route::resource('operasi-kandang', OperasiKandangController::class)->except(['show']);
+
+    // Pembelian Pakan
+    Route::resource('pembelian-pakan', PembelianPakanController::class)->except(['show']);
+
+    // Penggunaan Pakan
+    Route::resource('penggunaan-pakan', PenggunaanPakanController::class)->except(['show']);
+
+    // Pendapatan Kandang
+    Route::get('pendapatan-kandang', [PendapatanKandangController::class, 'index'])->name('pendapatan-kandang.index');
 
     // Kategori Pengeluaran
     Route::resource('pengeluaran', KategoriPengeluaranController::class)->except(['show']);

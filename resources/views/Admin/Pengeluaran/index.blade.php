@@ -66,6 +66,19 @@
                         </select>
                     </div>
 
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Kandang</label>
+                        <select name="kandang_id" class="w-full border p-2 rounded focus:ring-2 focus:ring-orange-500">
+                            <option value="">Semua Kandang</option>
+                            @foreach ($kandangs as $kd)
+                                <option value="{{ $kd->id }}"
+                                    {{ request('kandang_id') == $kd->id ? 'selected' : '' }}>
+                                    {{ $kd->nama_kandang }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
                 </div>
 
                 <div class="flex gap-2 mt-4">
@@ -87,12 +100,13 @@
             <!-- WRAPPER UNTUK SCROLL MOBILE -->
             <div class="overflow-x-auto">
 
-                <table class="w-full text-sm text-left min-w-[750px]">
+                <table class="w-full text-sm text-left min-w-[850px]">
                     <thead>
                         <tr class="border-b">
                             <th class="py-3 px-2">No</th>
                             <th class="py-3 px-2">Tanggal</th>
                             <th class="py-3 px-2">Kategori</th>
+                            <th class="py-3 px-2">Kandang</th>
                             <th class="py-3 px-2">Karyawan</th>
                             <th class="py-3 px-2">Jumlah</th>
                             <th class="py-3 px-2">Deskripsi</th>
@@ -114,6 +128,16 @@
                                         class="px-2 py-1 text-xs font-semibold rounded-full bg-orange-100 text-orange-800">
                                         {{ $item->kategori->nama_kategori }}
                                     </span>
+                                </td>
+
+                                <td class="py-3 px-2">
+                                    @if($item->kandang)
+                                        <span class="px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
+                                            {{ $item->kandang->nama_kandang }}
+                                        </span>
+                                    @else
+                                        <span class="text-gray-400">-</span>
+                                    @endif
                                 </td>
 
                                 <td class="py-3 px-2">{{ $item->karyawan->nama }}</td>
@@ -149,7 +173,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="7" class="text-center py-4 text-gray-500">
+                                <td colspan="8" class="text-center py-4 text-gray-500">
                                     Belum ada data pengeluaran.
                                 </td>
                             </tr>

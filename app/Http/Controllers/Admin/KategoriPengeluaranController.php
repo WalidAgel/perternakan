@@ -7,13 +7,14 @@ use App\Http\Controllers\Controller;
 use App\Models\KategoriPengeluaran;
 use App\Models\Kategori;
 use App\Models\Karyawan;
+use App\Models\Kandang;
 use Illuminate\Http\Request;
 
 class KategoriPengeluaranController extends Controller
 {
     public function index(Request $request)
     {
-        $query = KategoriPengeluaran::with(['kategori', 'karyawan']);
+        $query = KategoriPengeluaran::with(['kategori', 'karyawan', 'kandang']);
 
         // Filter tanggal
         if ($request->filled('tanggal_dari')) {
@@ -28,24 +29,29 @@ class KategoriPengeluaranController extends Controller
             $query->where('kategoris_id', $request->kategoris_id);
         }
 
-        // Filter karyawan
         if ($request->filled('karyawans_id')) {
             $query->where('karyawans_id', $request->karyawans_id);
+        }
+
+        if ($request->filled('kandang_id')) {
+            $query->where('kandang_id', $request->kandang_id);
         }
 
         $pengeluaran = $query->orderBy('tanggal', 'desc')->paginate(10);
 
         $kategori = Kategori::all();
         $karyawan = Karyawan::all();
+        $kandangs = Kandang::all();
 
-        return view('Admin.Pengeluaran.index', compact('pengeluaran', 'kategori', 'karyawan'));
+        return view('Admin.Pengeluaran.index', compact('pengeluaran', 'kategori', 'karyawan', 'kandangs'));
     }
 
     public function create()
     {
         $kategori = Kategori::all();
         $karyawan = Karyawan::all();
-        return view('Admin.Pengeluaran.create', compact('kategori', 'karyawan'));
+        $kandangs = Kandang::where('status', 'aktif')->get();
+        return view('Admin.Pengeluaran.create', compact('kategori', 'karyawan', 'kandangs'));
     }
 
     public function store(Request $request)
@@ -60,6 +66,7 @@ class KategoriPengeluaranController extends Controller
         $validated = $request->validate([
             'kategoris_id' => 'required|exists:kategoris,id',
             'karyawans_id' => 'required|exists:karyawans,id',
+            'kandang_id'   => 'nullable|exists:kandangs,id',
             'tanggal'      => 'required|date|before_or_equal:today',
             'jumlah'       => 'required|numeric|min:0|max:1000000000',
             'deskripsi'    => 'nullable|string'
@@ -85,7 +92,8 @@ class KategoriPengeluaranController extends Controller
     {
         $kategori = Kategori::all();
         $karyawan = Karyawan::all();
-        return view('Admin.Pengeluaran.edit', compact('pengeluaran', 'kategori', 'karyawan'));
+        $kandangs = Kandang::where('status', 'aktif')->get();
+        return view('Admin.Pengeluaran.edit', compact('pengeluaran', 'kategori', 'karyawan', 'kandangs'));
     }
 
     public function update(Request $request, KategoriPengeluaran $pengeluaran)
@@ -93,6 +101,7 @@ class KategoriPengeluaranController extends Controller
         $validated = $request->validate([
             'kategoris_id' => 'required|exists:kategoris,id',
             'karyawans_id' => 'required|exists:karyawans,id',
+            'kandang_id'   => 'nullable|exists:kandangs,id',
             'tanggal' => 'required|date',
             'jumlah' => 'required|numeric|min:0',
             'deskripsi' => 'nullable|string'

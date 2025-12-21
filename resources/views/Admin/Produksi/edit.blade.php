@@ -1,154 +1,98 @@
 @extends('Layout.app')
 
 @section('content')
-
-{{-- HEADER HIJAU --}}
-<div class="mb-8">
-    <div class="bg-green-600 rounded-2xl px-8 py-6 flex items-center justify-between shadow-lg">
-        <div>
-            <h1 class="text-3xl font-bold text-white">Edit Penjualan</h1>
-            <p class="text-green-100 mt-1">
-                Perbarui data penjualan telur secara akurat
-            </p>
-        </div>
-
-        <a href="{{ route('admin.penjualan.index') }}"
-           class="inline-flex items-center gap-2 px-5 py-2.5
-                  bg-green-500 hover:bg-green-700
-                  text-white font-semibold rounded-xl transition">
-            ← Kembali
-        </a>
-    </div>
-</div>
-
-{{-- CARD FORM --}}
-<div class="bg-white rounded-2xl shadow-lg overflow-hidden">
-
-    {{-- CARD TITLE --}}
-    <div class="px-8 py-6 border-b">
-        <h2 class="text-2xl font-bold text-gray-800">Form Edit Penjualan</h2>
-        <p class="text-gray-500 mt-1">
-            Lengkapi semua field yang bertanda wajib
-        </p>
+<div class="p-6">
+    <div class="mb-6">
+        <h1 class="text-2xl font-bold text-gray-800">Edit Produksi Telur</h1>
     </div>
 
-    {{-- FORM --}}
-    <form method="POST"
-          action="{{ route('admin.penjualan.update', $penjualan->id) }}"
-          class="px-8 py-6 space-y-6">
-        @csrf
-        @method('PUT')
+    @if($errors->any())
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+        <ul class="list-disc list-inside">
+            @foreach($errors->all() as $error)
+            <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
 
-        {{-- PRODUKSI --}}
-        <div>
-            <label class="block font-semibold text-gray-700 mb-2">
-                Pilih Produksi <span class="text-red-500">*</span>
-            </label>
-            <select name="produks_id" required
-                class="w-full px-4 py-3 rounded-xl border border-gray-300
-                       focus:ring-2 focus:ring-green-500 focus:border-green-500">
-                <option value="">-- Pilih Produksi --</option>
-                @foreach($produksi as $p)
-                    <option value="{{ $p->id }}"
-                        {{ $p->id == $penjualan->produks_id ? 'selected' : '' }}>
-                        Produksi #{{ $p->id }} - {{ $p->tanggal }} ({{ $p->jumlah }} butir)
-                    </option>
-                @endforeach
-            </select>
-            @error('produks_id')
-                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-            @enderror
-        </div>
+    <div class="bg-white shadow rounded-xl p-6">
+        <form action="{{ route('admin.produksi.update', $data->id) }}" method="POST">
+            @csrf
+            @method('PUT')
 
-        {{-- GRID --}}
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="mb-4">
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Kandang <span class="text-red-500">*</span></label>
+                    <select name="kandang_id"
+                        class="w-full border-gray-300 rounded-lg p-2 bg-white focus:ring-2 focus:ring-orange-300"
+                        required>
+                        <option value="">-- Pilih Kandang --</option>
+                        @foreach ($kandangs as $k)
+                            <option value="{{ $k->id }}"
+                                {{ old('kandang_id', $data->kandang_id) == $k->id ? 'selected' : '' }}>
+                                {{ $k->nama_kandang }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
 
-            {{-- TANGGAL --}}
-            <div>
-                <label class="block font-semibold text-gray-700 mb-2">
-                    Tanggal Penjualan <span class="text-red-500">*</span>
-                </label>
-                <input type="date" name="tanggal"
-                    value="{{ old('tanggal', $penjualan->tanggal->format('Y-m-d')) }}"
-                    required
-                    class="w-full px-4 py-3 rounded-xl border border-gray-300
-                           focus:ring-2 focus:ring-green-500 focus:border-green-500">
+                <div class="mb-4">
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Karyawan <span class="text-red-500">*</span></label>
+                    <select name="karyawans_id"
+                        class="w-full border-gray-300 rounded-lg p-2 bg-white focus:ring-2 focus:ring-orange-300"
+                        required>
+                        <option value="">-- Pilih Karyawan --</option>
+                        @foreach ($karyawans as $k)
+                            <option value="{{ $k->id }}"
+                                {{ old('karyawans_id', $data->karyawans_id) == $k->id ? 'selected' : '' }}>
+                                {{ $k->nama }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Tanggal Produksi <span class="text-red-500">*</span></label>
+                    <input type="date" name="tanggal"
+                        value="{{ old('tanggal', $data->tanggal->format('Y-m-d')) }}"
+                        class="w-full border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-orange-300"
+                        required>
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Jumlah Telur Bagus (butir) <span class="text-red-500">*</span></label>
+                    <input type="number" name="jumlah_bagus" value="{{ old('jumlah_bagus', $data->jumlah_bagus) }}"
+                        class="w-full border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-orange-300"
+                        min="0" required>
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Jumlah Telur Rusak (butir) <span class="text-red-500">*</span></label>
+                    <input type="number" name="jumlah_rusak" value="{{ old('jumlah_rusak', $data->jumlah_rusak) }}"
+                        class="w-full border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-orange-300"
+                        min="0" required>
+                </div>
             </div>
 
-            {{-- JUMLAH TERJUAL --}}
-            <div>
-                <label class="block font-semibold text-gray-700 mb-2">
-                    Jumlah Terjual (Kg) <span class="text-red-500">*</span>
-                </label>
-                <input type="number" id="jumlah_terjual" name="jumlah_terjual"
-                    value="{{ old('jumlah_terjual', $penjualan->jumlah_terjual) }}"
-                    step="0.01" min="0" required
-                    class="w-full px-4 py-3 rounded-xl border border-gray-300
-                           focus:ring-2 focus:ring-green-500 focus:border-green-500">
+            <div class="mb-6">
+                <label class="block text-sm font-semibold text-gray-700 mb-2">Catatan</label>
+                <textarea name="catatan" rows="3"
+                    class="w-full border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-orange-300"
+                    placeholder="Opsional...">{{ old('catatan', $data->catatan) }}</textarea>
             </div>
 
-            {{-- HARGA --}}
-            <div>
-                <label class="block font-semibold text-gray-700 mb-2">
-                    Harga per Kg <span class="text-red-500">*</span>
-                </label>
-                <input type="number" id="harga_per_kg" name="harga_per_kg"
-                    value="{{ old('harga_per_kg', $penjualan->harga_per_kg) }}"
-                    step="0.01" min="0" required
-                    class="w-full px-4 py-3 rounded-xl border border-gray-300
-                           focus:ring-2 focus:ring-green-500 focus:border-green-500">
+            <div class="flex gap-3">
+                <button type="submit"
+                    class="px-6 py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-lg shadow font-semibold">
+                    Update
+                </button>
+                <a href="{{ route('admin.produksi.index') }}"
+                    class="px-6 py-2 bg-gray-300 hover:bg-gray-400 text-gray-700 rounded-lg shadow font-semibold">
+                    Batal
+                </a>
             </div>
-
-            {{-- TOTAL --}}
-            <div>
-                <label class="block font-semibold text-gray-700 mb-2">
-                    Total Harga
-                </label>
-                <input type="number" id="total" name="total"
-                    value="{{ old('total', $penjualan->total) }}"
-                    step="0.01" readonly
-                    class="w-full px-4 py-3 rounded-xl bg-gray-100 border border-gray-300">
-            </div>
-        </div>
-
-        {{-- INFO --}}
-        <div class="bg-green-50 border-l-4 border-green-500 rounded-lg p-4">
-            <p class="text-sm text-green-800">
-                Total harga akan dihitung otomatis berdasarkan harga dan jumlah terjual.
-            </p>
-        </div>
-
-        {{-- ACTION --}}
-        <div class="flex justify-end gap-3 pt-6 border-t">
-            <a href="{{ route('admin.penjualan.index') }}"
-               class="px-6 py-3 rounded-xl bg-gray-100 hover:bg-gray-200
-                      text-gray-700 font-semibold transition">
-                Batal
-            </a>
-
-            <button type="submit"
-                class="px-8 py-3 rounded-xl
-                       bg-green-600 hover:bg-green-700
-                       text-white font-semibold shadow-lg
-                       active:scale-95 transition">
-                Update Penjualan
-            </button>
-        </div>
-
-    </form>
+        </form>
+    </div>
 </div>
-
-{{-- SCRIPT (TIDAK DIUBAH) --}}
-<script>
-function calculateTotal() {
-    const harga = parseFloat(document.getElementById('harga_per_kg').value) || 0;
-    const qty = parseFloat(document.getElementById('jumlah_terjual').value) || 0;
-    document.getElementById('total').value = (harga * qty).toFixed(2);
-}
-
-document.getElementById('harga_per_kg').addEventListener('input', calculateTotal);
-document.getElementById('jumlah_terjual').addEventListener('input', calculateTotal);
-calculateTotal();
-</script>
-
 @endsection

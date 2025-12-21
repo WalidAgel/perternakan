@@ -13,20 +13,35 @@ class ProduksiTelur extends Model
 
     protected $fillable = [
         'karyawans_id',
+        'kandang_id',
         'tanggal',
         'jumlah',
+        'jumlah_bagus',
+        'jumlah_rusak',
+        'catatan',
         'kualitas',
         'keterangan'
     ];
 
-    // TAMBAHKAN INI - Cast jumlah sebagai integer
     protected $casts = [
         'jumlah' => 'integer',
+        'jumlah_bagus' => 'integer',
+        'jumlah_rusak' => 'integer',
         'tanggal' => 'date:Y-m-d',
     ];
 
     public function karyawan()
     {
         return $this->belongsTo(Karyawan::class, 'karyawans_id');
+    }
+
+    public function kandang()
+    {
+        return $this->belongsTo(Kandang::class, 'kandang_id');
+    }
+
+    public function pendapatan()
+    {
+        return $this->hasOne(PendapatanKandang::class, 'produksi_telur_id');
     }
 }
