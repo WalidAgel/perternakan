@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
+
 use App\Http\Controllers\Controller;
 
 use App\Models\KategoriPengeluaran;
@@ -10,7 +11,7 @@ use Illuminate\Http\Request;
 
 class KategoriPengeluaranController extends Controller
 {
-  public function index(Request $request)
+    public function index(Request $request)
     {
         $query = KategoriPengeluaran::with(['kategori', 'karyawan']);
 
@@ -49,22 +50,29 @@ class KategoriPengeluaranController extends Controller
 
     public function store(Request $request)
     {
+        $jumlah = preg_replace('/[^0-9]/', '', $request->jumlah);
+
+        // Gabungkan kembali ke request
+        $request->merge([
+            'jumlah' => $jumlah
+        ]);
+
         $validated = $request->validate([
             'kategoris_id' => 'required|exists:kategoris,id',
             'karyawans_id' => 'required|exists:karyawans,id',
-            'tanggal' => 'required|date',
-            'jumlah' => 'required|numeric|min:0',
-            'deskripsi' => 'nullable|string'
+            'tanggal'      => 'required|date|before_or_equal:today',
+            'jumlah'       => 'required|numeric|min:0|max:1000000000',
+            'deskripsi'    => 'nullable|string'
         ], [
             'kategoris_id.required' => 'Kategori harus dipilih',
-            'kategoris_id.exists' => 'Kategori tidak valid',
+            'kategoris_id.exists'   => 'Kategori tidak valid',
             'karyawans_id.required' => 'Karyawan harus dipilih',
-            'karyawans_id.exists' => 'Karyawan tidak valid',
-            'tanggal.required' => 'Tanggal harus diisi',
-            'tanggal.date' => 'Format tanggal tidak valid',
-            'jumlah.required' => 'Jumlah harus diisi',
-            'jumlah.numeric' => 'Jumlah harus berupa angka',
-            'jumlah.min' => 'Jumlah minimal 0'
+            'karyawans_id.exists'   => 'Karyawan tidak valid',
+            'tanggal.required'      => 'Tanggal harus diisi',
+            'tanggal.date'          => 'Format tanggal tidak valid',
+            'jumlah.required'       => 'Jumlah harus diisi',
+            'jumlah.numeric'        => 'Jumlah harus berupa angka',
+            'jumlah.max'            => 'Maksimal Rp 1.000.000.000',
         ]);
 
         KategoriPengeluaran::create($validated);

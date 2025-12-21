@@ -11,12 +11,12 @@ class KategoriController extends Controller
     public function index()
     {
         $kategoris = Kategori::all();
-        return view('Admin.Kategori.index', compact('kategoris'));
+        return view('admin.kategori.index', compact('kategoris')); // ✅ FIXED
     }
 
     public function create()
     {
-        return view('Admin.Kategori.create');
+        return view('admin.kategori.create'); // ✅ FIXED
     }
 
     public function store(Request $request)
@@ -28,12 +28,13 @@ class KategoriController extends Controller
 
         Kategori::create($request->all());
 
-        return redirect()->route('Admin.Kategori.index')->with('success', 'Kategori berhasil ditambahkan');
+        return redirect()->route('admin.kategori.index') // ✅ FIXED
+            ->with('success', 'Kategori berhasil ditambahkan');
     }
 
-    public function edit(Kategori $kategori_pengeluaran)
+    public function edit(Kategori $kategori)
     {
-        return view('Admin.Kategori.edit', ['kategori' => $kategori_pengeluaran]);
+        return view('admin.kategori.edit', ['kategori' => $kategori]); // ✅ FIXED
     }
 
     public function update(Request $request, Kategori $kategori_pengeluaran)
@@ -45,13 +46,15 @@ class KategoriController extends Controller
 
         $kategori_pengeluaran->update($request->all());
 
-        return redirect()->route('Admin.Kategori.index')->with('success', 'Kategori berhasil diperbarui');
+        return redirect()->route('admin.kategori.index') // ✅ FIXED
+            ->with('success', 'Kategori berhasil diperbarui');
     }
 
     public function destroy(Kategori $kategori_pengeluaran)
     {
         $kategori_pengeluaran->delete();
 
-        return redirect()->route('Admin.Kategori.index')->with('success', 'Kategori berhasil dihapus');
+        return redirect()->route('admin.kategori.index') // ✅ FIXED
+            ->with('success', 'Kategori berhasil dihapus');
     }
 }

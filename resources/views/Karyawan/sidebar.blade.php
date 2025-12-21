@@ -24,15 +24,29 @@
 
 <body>
 
+
+    <!-- Overlay untuk mobile -->
+    <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden md:hidden">
+    </div>
+
     <!-- SIDEBAR -->
     <aside id="sidebar"
-        class="w-64 bg-white h-screen shadow-md flex flex-col px-6 py-8 fixed md:sticky md:top-0 md:left-0 z-40 transform -translate-x-full md:translate-x-0 transition-transform duration-300">
+        class="w-64 bg-white h-screen shadow-md flex flex-col px-4 py-6
+               fixed top-0 left-0 z-50
+               transform -translate-x-full md:translate-x-0
+               transition-transform duration-300 ease-in-out
+               md:sticky md:top-0
+               overflow-y-auto">
 
-        <!-- LOGO -->
-        <div class="flex items-center justify-between mb-6 flex-shrink-0">
+        <!-- LOGO (Desktop) -->
+        <div class="hidden md:flex items-center justify-between mb-10 flex-shrink-0">
             <img src="/img/logo.png" class="w-24" alt="Logo">
+        </div>
 
-            <button onclick="toggleSidebar()" class="md:hidden">
+        <!-- Header Mobile (dalam sidebar) -->
+        <div class="md:hidden flex items-center justify-between mb-6 flex-shrink-0">
+            <img src="/img/logo.png" class="w-20" alt="Logo">
+            <button onclick="toggleSidebar()" class="p-2 rounded-lg hover:bg-gray-100">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                 </svg>
@@ -42,7 +56,8 @@
         <!-- USER INFO -->
         <div class="bg-gradient-to-r from-blue-50 to-blue-100 rounded-xl p-4 mb-6 flex-shrink-0">
             <div class="flex items-center space-x-3">
-                <div class="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-lg flex-shrink-0">
+                <div
+                    class="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-lg flex-shrink-0">
                     {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
                 </div>
                 <div class="overflow-hidden">
@@ -117,9 +132,8 @@
     </aside>
 
     <!-- Overlay untuk mobile (ketika sidebar terbuka) -->
-    <div id="sidebar-overlay"
-         onclick="toggleSidebar()"
-         class="fixed inset-0 bg-black bg-opacity-50 z-30 md:hidden hidden">
+    <div id="sidebar-overlay" onclick="toggleSidebar()"
+        class="fixed inset-0 bg-black bg-opacity-50 z-30 md:hidden hidden">
     </div>
 
 </body>

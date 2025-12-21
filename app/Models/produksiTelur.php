@@ -5,12 +5,25 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class produksiTelur extends Model
+class ProduksiTelur extends Model
 {
     use HasFactory;
-    protected $table = 'produksi_telurs';
-    protected $fillable = ['karyawan_id', 'tanggal', 'jumlah', 'kualitas', 'keterangan'];
 
+    protected $table = 'produksi_telurs';
+
+    protected $fillable = [
+        'karyawans_id',
+        'tanggal',
+        'jumlah',
+        'kualitas',
+        'keterangan'
+    ];
+
+    // TAMBAHKAN INI - Cast jumlah sebagai integer
+    protected $casts = [
+        'jumlah' => 'integer',
+        'tanggal' => 'date:Y-m-d',
+    ];
 
     public function karyawan()
     {

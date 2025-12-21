@@ -213,6 +213,7 @@
             </div>
 
             <!-- Tabel Riwayat -->
+            <!-- Tabel Riwayat -->
             <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
                 <div class="p-6 border-b border-gray-200">
                     <div class="flex items-center justify-between">
@@ -237,8 +238,6 @@
                                 <th class="p-4 text-left font-semibold">Kategori</th>
                                 <th class="p-4 text-left font-semibold">Nominal</th>
                                 <th class="p-4 text-left font-semibold">Keterangan</th>
-                                <th class="p-4 text-center font-semibold">Bukti</th>
-                                <th class="p-4 text-center font-semibold">Aksi</th>
                             </tr>
                         </thead>
                         <tbody class="text-gray-800 divide-y divide-gray-200">
@@ -246,11 +245,13 @@
                                 <tr class="hover:bg-gray-50 transition">
                                     <td class="p-4">{{ $pengeluaran->firstItem() + $index }}</td>
                                     <td class="p-4">
-                                        <span
-                                            class="font-medium">{{ \Carbon\Carbon::parse($item->tanggal)->format('d/m/Y') }}</span>
+                                        <span class="font-medium">
+                                            {{ \Carbon\Carbon::parse($item->tanggal)->format('d/m/Y') }}
+                                        </span>
                                         <br>
-                                        <span
-                                            class="text-xs text-gray-500">{{ \Carbon\Carbon::parse($item->tanggal)->diffForHumans() }}</span>
+                                        <span class="text-xs text-gray-500">
+                                            {{ \Carbon\Carbon::parse($item->tanggal)->diffForHumans() }}
+                                        </span>
                                     </td>
                                     <td class="p-4">
                                         <span
@@ -259,8 +260,9 @@
                                         </span>
                                     </td>
                                     <td class="p-4">
-                                        <span class="font-bold text-red-600 text-lg">Rp
-                                            {{ number_format($item->jumlah, 0, ',', '.') }}</span>
+                                        <span class="font-bold text-red-600 text-lg">
+                                            Rp {{ number_format($item->jumlah, 0, ',', '.') }}
+                                        </span>
                                     </td>
                                     <td class="p-4 text-sm text-gray-600 max-w-xs">
                                         <div class="line-clamp-2">{{ $item->deskripsi ?: '-' }}</div>
@@ -276,29 +278,10 @@
                                             <span class="text-gray-400 text-sm">-</span>
                                         @endif
                                     </td>
-                                    <td class="p-4">
-                                        <div class="flex gap-2 justify-center">
-                                            <a href="#" class="text-gray-500 cursor-not-allowed">
-
-                                                class="px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition">
-                                                Detail
-                                            </a>
-                                            <form action="{{ route('karyawan.pengeluaran.destroy', $item->id) }}"
-                                                method="POST"
-                                                onsubmit="return confirm('Yakin ingin menghapus data ini?')">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit"
-                                                    class="px-3 py-1 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm font-medium transition">
-                                                    Hapus
-                                                </button>
-                                            </form>
-                                        </div>
-                                    </td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="7" class="text-center py-12 text-gray-500">
+                                    <td colspan="6" class="text-center py-12 text-gray-500">
                                         <svg class="w-20 h-20 mx-auto mb-4 text-gray-400" fill="none"
                                             stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -313,13 +296,13 @@
                     </table>
                 </div>
 
-                <!-- Pagination -->
                 @if (isset($pengeluaran) && $pengeluaran->hasPages())
                     <div class="p-4 border-t border-gray-200">
                         {{ $pengeluaran->links() }}
                     </div>
                 @endif
             </div>
+
 
         </div>
 

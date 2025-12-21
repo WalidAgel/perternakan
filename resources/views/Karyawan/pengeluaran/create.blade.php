@@ -167,36 +167,7 @@
                         @enderror
                     </div>
 
-                    <!-- Upload Bukti -->
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">
-                            Upload Bukti <span class="text-gray-400">(Opsional)</span>
-                        </label>
-                        <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-red-400 transition">
-                            <input type="file" name="bukti" id="bukti" accept="image/jpeg,image/png,image/jpg"
-                                class="hidden" onchange="previewImage(event)">
-                            <label for="bukti" class="cursor-pointer">
-                                <svg class="w-12 h-12 mx-auto text-gray-400 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
-                                </svg>
-                                <p class="text-sm text-gray-600 font-medium">Klik untuk upload gambar</p>
-                                <p class="text-xs text-gray-500 mt-1">Format: JPG, PNG (Max: 2MB)</p>
-                            </label>
-                        </div>
-                        <div id="imagePreview" class="mt-4 hidden">
-                            <img id="preview" class="max-w-xs rounded-lg shadow-md mx-auto" alt="Preview">
-                            <button type="button" onclick="removeImage()"
-                                class="mt-2 text-red-600 hover:text-red-800 text-sm font-medium flex items-center mx-auto">
-                                <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"/>
-                                </svg>
-                                Hapus Gambar
-                            </button>
-                        </div>
-                        @error('bukti')
-                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                        @enderror
-                    </div>
+
 
                     <!-- Buttons -->
                     <div class="flex gap-3 pt-4 border-t border-gray-200">

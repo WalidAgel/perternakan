@@ -13,4 +13,4 @@
               class="w-full border p-2 rounded">{{ old('deskripsi', $kategori->deskripsi ?? '') }}</textarea>
 </div>
 
-<button class="px-4 py-2 bg-blue-600 text-white rounded">Simpan</button>
+<button class="px-4 py-2 bg-orange-600 text-white rounded">Simpan</button>

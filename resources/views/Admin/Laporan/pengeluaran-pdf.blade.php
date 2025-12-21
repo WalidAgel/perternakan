@@ -108,7 +108,7 @@
 </head>
 <body>
     <div class="header">
-        <h2>🐔 LAPORAN PENGELUARAN</h2>
+        <h2>LAPORAN PENGELUARAN</h2>
         <p>Sistem Peternakan Ayam Petelur</p>
         <p>Tanggal Cetak: {{ now()->timezone('Asia/Jakarta')->format('d F Y, H:i:s') }} WIB</p>
     </div>
@@ -173,7 +173,7 @@
     </table>
 
     <div class="footer">
-        <p>Dicetak dari Sistem Peternakan Ayam Petelur</p>
+        <p>Dicetak dari Sistem Peternakan Ayam Petelur DWI FARM Rombasan</p>
         <p>Dokumen ini digenerate secara otomatis dan sah tanpa tanda tangan</p>
     </div>
 </body>

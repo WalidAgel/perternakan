@@ -1,8 +1,8 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
-use App\Http\Controllers\Controller;
 
+use App\Http\Controllers\Controller;
 use App\Models\Penjualan;
 use App\Models\ProduksiTelur;
 use Illuminate\Http\Request;
@@ -11,89 +11,101 @@ class PenjualanController extends Controller
 {
     public function index(Request $request)
     {
-        // Query utama penjualan
-        $query = Penjualan::with(['produksiTelur']);
+        // Load relasi produksiTelur (sesuai nama method di model)
+        $query = Penjualan::with('produksiTelur');
 
-        // Filter tanggal
+        // Filter berdasarkan tanggal
         if ($request->filled('tanggal')) {
-            $query->where('tanggal', $request->tanggal);
+            $query->whereDate('tanggal', $request->tanggal);
         }
 
-        // Filter produksi
+        // Filter berdasarkan produksi
         if ($request->filled('produksi_id')) {
-            $query->where('produksi_id', $request->produksi_id);
+            $query->where('produks_id', $request->produksi_id);
         }
 
-        $penjualan = $query->latest()->paginate(10);
+        $penjualan = $query->latest('tanggal')->paginate(10);
 
-        // WAJIB: kirim list produksi
-        $produksiList = ProduksiTelur::orderBy('id', 'DESC')->get();
+        // Kirim data produksi telur untuk dropdown filter
+        $produksiList = ProduksiTelur::orderBy('tanggal', 'desc')->get();
 
-        return view('Admin.Penjualan.index', compact('penjualan', 'produksiList'));
+        return view('admin.penjualan.index', compact('penjualan', 'produksiList'));
     }
-
 
     public function create()
     {
-        $produksiList = ProduksiTelur::orderBy('id', 'DESC')->get();
-        return view('Admin.Penjualan.create', compact('produksiList'));
+        $produksi = ProduksiTelur::with('karyawan')
+            ->orderBy('tanggal', 'desc')
+            ->get();
+
+        return view('admin.penjualan.create', compact('produksi'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'produksi_id' => 'required',
-            'tanggal'     => 'required|date',
-            'jumlah_terjual' => 'required|numeric',
-            'harga_per_kg'   => 'required|numeric',
+            'produks_id' => 'required|exists:produksi_telurs,id',
+            'tanggal' => 'required|date',
+            'harga_per_kg' => 'required|numeric|min:0',
+            'qty' => 'required|array|min:1',
+            'qty.*' => 'required|numeric|min:0',
+            'total' => 'required|numeric|min:0'
         ]);
 
-        $total = $request->jumlah_terjual * $request->harga_per_kg;
+        // Hitung total qty
+        $totalQty = array_sum($request->qty);
 
         Penjualan::create([
-            'produksi_id' => $request->produksi_id,
-            'tanggal'     => $request->tanggal,
-            'jumlah_terjual' => $request->jumlah_terjual,
-            'harga_per_kg'   => $request->harga_per_kg,
-            'total'       => $total,
+            'produks_id' => $request->produks_id,
+            'tanggal' => $request->tanggal,
+            'harga_per_kg' => $request->harga_per_kg,
+            'jumlah_terjual' => $totalQty, // Sesuai kolom database
+            'total' => $request->total,
         ]);
 
-        return redirect()->route('admin.penjualan.index')->with('success', 'Penjualan berhasil ditambahkan!');
+        return redirect()->route('admin.penjualan.index')
+            ->with('success', 'Penjualan berhasil ditambahkan!');
     }
 
     public function edit($id)
     {
-        $data = Penjualan::findOrFail($id);
-        $produksiList = ProduksiTelur::all();
+        $penjualan = Penjualan::findOrFail($id);
+        $produksi = ProduksiTelur::with('karyawan')
+            ->orderBy('tanggal', 'desc')
+            ->get();
 
-        return view('Admin.Penjualan.edit', compact('data', 'produksiList'));
+        return view('admin.penjualan.edit', compact('penjualan', 'produksi'));
     }
 
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'produksi_id' => 'required',
-            'tanggal'     => 'required',
-            'jumlah_terjual' => 'required|numeric',
-            'harga_per_kg'   => 'required|numeric',
-        ]);
-
         $penjualan = Penjualan::findOrFail($id);
 
-        $penjualan->update([
-            'produksi_id' => $request->produksi_id,
-            'tanggal' => $request->tanggal,
-            'jumlah_terjual' => $request->jumlah_terjual,
-            'harga_per_kg' => $request->harga_per_kg,
-            'total' => $request->jumlah_terjual * $request->harga_per_kg,
+        $request->validate([
+            'produks_id' => 'required|exists:produksi_telurs,id',
+            'tanggal' => 'required|date',
+            'harga_per_kg' => 'required|numeric|min:0',
+            'jumlah_terjual' => 'required|numeric|min:0',
+            'total' => 'required|numeric|min:0'
         ]);
 
-        return redirect()->route('admin.penjualan.index')->with('success', 'Penjualan berhasil diperbarui!');
+        $penjualan->update([
+            'produks_id' => $request->produks_id,
+            'tanggal' => $request->tanggal,
+            'harga_per_kg' => $request->harga_per_kg,
+            'jumlah_terjual' => $request->jumlah_terjual,
+            'total' => $request->total,
+        ]);
+
+        return redirect()->route('admin.penjualan.index')
+            ->with('success', 'Penjualan berhasil diperbarui!');
     }
 
     public function destroy($id)
     {
-        Penjualan::findOrFail($id)->delete();
-        return redirect()->route('admin.penjualan.index')->with('success', 'Penjualan berhasil dihapus!');
+        Penjualan::destroy($id);
+
+        return redirect()->route('admin.penjualan.index')
+            ->with('success', 'Penjualan berhasil dihapus!');
     }
 }

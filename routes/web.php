@@ -2,7 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
-// use App\Http\Controllers\Karyawan\KaryawanController AS KaryawanProduksiTelurController;
 use App\Http\Controllers\Karyawan\ProduksiTelurController as KaryawanProduksiTelurController;
 use App\Http\Controllers\Admin\KaryawanController;
 use App\Http\Controllers\Admin\UserController;
@@ -13,7 +12,9 @@ use App\Http\Controllers\Admin\PenjualanController;
 use App\Http\Controllers\Admin\ProduksiTelurController;
 use App\Http\Controllers\Admin\LaporanController;
 use App\Http\Controllers\Karyawan\PengeluaranController;
-use App\Http\Controllers\Karyawan\ProfilController; // ← TAMBAHKAN INI
+use App\Http\Controllers\Karyawan\ProfilController;
+use App\Http\Controllers\Admin\AdminController; // ⭐ TAMBAHKAN INI
+use App\Http\Controllers\Karyawan\KaryawanController as KaryawanDashboardController; // ⭐ TAMBAHKAN INI
 
 // ===============================
 // AUTH ROUTES (PUBLIC)
@@ -32,14 +33,8 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::prefix('karyawan')->name('karyawan.')->middleware('auth')->group(function () {
 
-    // Dashboard Karyawan
-    Route::get('/dashboard', function () {
-        // Cek role
-        if (Auth::check() && Auth::user()->role !== 'karyawan') {
-            abort(403, 'Anda tidak memiliki akses ke halaman ini.');
-        }
-        return view('karyawan.dashboard');
-    })->name('dashboard');
+    // Dashboard Karyawan - ⭐ GANTI DENGAN CONTROLLER
+    Route::get('/dashboard', [KaryawanDashboardController::class, 'dashboard'])->name('dashboard');
 
     // Input Produksi
     Route::get('/produksi', [KaryawanProduksiTelurController::class, 'index'])->name('produksi.index');
@@ -57,13 +52,13 @@ Route::prefix('karyawan')->name('karyawan.')->middleware('auth')->group(function
     Route::delete('/pengeluaran/{pengeluaran}', [PengeluaranController::class, 'destroy'])->name('pengeluaran.destroy');
 
     // Riwayat
-    Route::get('/riwayat/produksi', [ProduksiTelurController::class, 'riwayat'])->name('riwayat.produksi');
+    Route::get('/riwayat/produksi', [KaryawanProduksiTelurController::class, 'riwayat'])->name('riwayat.produksi');
     Route::get('/riwayat/pengeluaran', [PengeluaranController::class, 'riwayat'])->name('riwayat.pengeluaran');
 
     // Laporan Pengeluaran Karyawan
     Route::get('/laporan/pengeluaran', [PengeluaranController::class, 'index'])->name('laporan.pengeluaran');
 
-    // Profil - GANTI BAGIAN INI
+    // Profil
     Route::get('/profil', [ProfilController::class, 'index'])->name('profil.index');
     Route::put('/profil', [ProfilController::class, 'updateProfil'])->name('profil.update');
     Route::put('/profil/password', [ProfilController::class, 'updatePassword'])->name('profil.update-password');
@@ -75,22 +70,11 @@ Route::prefix('karyawan')->name('karyawan.')->middleware('auth')->group(function
 
 Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
 
-    // Dashboard
-    Route::get('/dashboard', function () {
-        // Cek role
-        if (Auth::check() && Auth::user()->role !== 'admin') {
-            abort(403, 'Anda tidak memiliki akses ke halaman ini.');
-        }
-        return view('admin.dashboard');
-    })->name('dashboard');
+    // Dashboard - ⭐ GANTI DENGAN CONTROLLER (INI YANG PENTING!)
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
 
-    // Data Master
-    Route::get('/data-master', function () {
-        if (Auth::check() && Auth::user()->role !== 'admin') {
-            abort(403, 'Anda tidak memiliki akses ke halaman ini.');
-        }
-        return view('admin.DataMaster');
-    })->name('dataMaster');
+    // Data Master - ⭐ GANTI DENGAN CONTROLLER
+    Route::get('/data-master', [AdminController::class, 'dataMaster'])->name('dataMaster');
 
     // ===============================
     // RESOURCE ROUTES

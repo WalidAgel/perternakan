@@ -32,7 +32,7 @@
 
             <!-- Header -->
             <div class="mb-8">
-                <h1 class="text-3xl font-bold text-white mb-2">🥚 Input Produksi Telur</h1>
+                <h1 class="text-3xl font-bold text-white mb-2">Input Produksi Telur</h1>
                 <p class="text-white/80">Catat hasil produksi telur harian Anda</p>
             </div>
 

@@ -6,7 +6,7 @@
     <div class="flex justify-between items-center mb-6">
         <h1 class="text-2xl font-bold text-gray-800">Daftar Kategori Pengeluaran</h1>
         <a href="{{ route('admin.kategori.create') }}"
-            class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
+            class="bg-orange-600 text-white font-semibold px-4 py-2 rounded hover:bg-orange-700 transition">
             + Tambah Kategori
         </a>
     </div>
@@ -28,7 +28,7 @@
                     <td class="py-3 px-2">{{ $k->deskripsi }}</td>
                     <td class="py-3 px-2 flex gap-2 justify-center">
                         <a href="{{ route('admin.kategori.edit', $k->id) }}"
-                            class="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600">
+                            class="bg-yellow-500 text-white font-semibold px-3 py-1 rounded hover:bg-yellow-600 flex items-center justify-center">
                             Edit
                         </a>
 
@@ -36,7 +36,7 @@
                             onsubmit="return confirm('Hapus kategori ini?')">
                             @csrf
                             @method('DELETE')
-                            <button class="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700">
+                            <button class="bg-red-600 text-white font-semibold px-3 py-1 rounded hover:bg-red-700">
                                 Hapus
                             </button>
                         </form>
