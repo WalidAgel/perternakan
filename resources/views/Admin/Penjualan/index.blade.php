@@ -66,7 +66,7 @@
                             <td class="p-3">
                                 @if ($row->produksiTelur)
                                     <span class="px-2 py-1 bg-orange-100 text-orange-700 rounded text-sm">
-                                        Produksi #{{ $row->produksiTelur->id }}
+                                        Produksi {{ $row->produksiTelur->kandang->nama ?? 'Kandang' }}
                                     </span>
                                     <br>
                                     <small class="text-gray-500">
@@ -90,7 +90,7 @@
                                 <div class="flex items-center justify-center gap-3">
 
                                     {{-- EDIT --}}
-                                    <a href="{{ route('admin.penjualan.edit', $p->id) }}"
+                                    <a href="{{ route('admin.penjualan.edit', $row->id) }}"
                                         class="px-4 py-2 bg-yellow-400 hover:bg-yellow-500
                     text-white font-semibold rounded-md
                     transition shadow text-sm min-w-[80px] text-center flex items-center justify-center">
@@ -98,7 +98,7 @@
                                     </a>
 
                                     {{-- HAPUS --}}
-                                    <form action="{{ route('admin.penjualan.destroy', $p->id) }}" method="POST"
+                                    <form action="{{ route('admin.penjualan.destroy', $row->id) }}" method="POST"
                                         onsubmit="return confirm('Yakin ingin menghapus data ini?')">
                                         @csrf
                                         @method('DELETE')
