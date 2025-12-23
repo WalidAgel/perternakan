@@ -44,24 +44,50 @@ class PembelianPakanController extends Controller
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        // Bersihkan format dari input harga_satuan (hapus pemisah ribuan)
+        $hargaSatuan = preg_replace('/[^0-9]/', '', $request->harga_satuan);
+
+        // Bersihkan format dari input jumlah (ganti koma dengan titik untuk desimal)
+        $jumlah = str_replace(',', '.', $request->jumlah);
+
+        // Validasi
+        $request->validate([
             'pakan_id' => 'required|exists:pakans,id',
             'karyawans_id' => 'required|exists:karyawans,id',
             'tanggal' => 'required|date',
-            'jumlah' => 'required|numeric|min:0.01',
-            'harga_satuan' => 'required|numeric|min:0',
             'keterangan' => 'nullable|string'
         ]);
 
-        $validated['total_harga'] = $validated['jumlah'] * $validated['harga_satuan'];
+        // Validasi manual untuk jumlah dan harga
+        if (!is_numeric($jumlah) || $jumlah <= 0) {
+            return back()->withErrors(['jumlah' => 'Jumlah harus berupa angka positif'])->withInput();
+        }
 
-        DB::transaction(function () use ($validated) {
-            $pembelian = PembelianPakan::create($validated);
+        if (!is_numeric($hargaSatuan) || $hargaSatuan < 0) {
+            return back()->withErrors(['harga_satuan' => 'Harga satuan harus berupa angka positif'])->withInput();
+        }
 
-            $pakan = Pakan::find($validated['pakan_id']);
-            $pakan->stok += $validated['jumlah'];
+        // Hitung total harga
+        $totalHarga = $jumlah * $hargaSatuan;
+
+        DB::transaction(function () use ($request, $jumlah, $hargaSatuan, $totalHarga) {
+            // Simpan pembelian
+            $pembelian = PembelianPakan::create([
+                'pakan_id' => $request->pakan_id,
+                'karyawans_id' => $request->karyawans_id,
+                'tanggal' => $request->tanggal,
+                'jumlah' => $jumlah,
+                'harga_satuan' => $hargaSatuan,
+                'total_harga' => $totalHarga,
+                'keterangan' => $request->keterangan
+            ]);
+
+            // Update stok pakan
+            $pakan = Pakan::find($request->pakan_id);
+            $pakan->stok += $jumlah;
             $pakan->save();
 
+            // Catat sebagai pengeluaran
             $kategoriPakan = Kategori::firstOrCreate(
                 ['nama_kategori' => 'Pembelian Pakan'],
                 ['deskripsi' => 'Kategori untuk pembelian pakan']
@@ -69,10 +95,10 @@ class PembelianPakanController extends Controller
 
             KategoriPengeluaran::create([
                 'kategoris_id' => $kategoriPakan->id,
-                'karyawans_id' => $validated['karyawans_id'],
-                'tanggal' => $validated['tanggal'],
-                'jumlah' => $validated['total_harga'],
-                'deskripsi' => 'Pembelian pakan: ' . $pakan->nama_pakan . ' (' . $validated['jumlah'] . ' kg)'
+                'karyawans_id' => $request->karyawans_id,
+                'tanggal' => $request->tanggal,
+                'jumlah' => $totalHarga,
+                'deskripsi' => 'Pembelian pakan: ' . $pakan->nama_pakan . ' (' . $jumlah . ' kg)'
             ]);
         });
 
@@ -84,32 +110,62 @@ class PembelianPakanController extends Controller
     {
         $pakans = Pakan::all();
         $karyawans = Karyawan::all();
+
+        // Format data untuk tampilan (jika diperlukan)
+        // harga_satuan dan jumlah sudah dalam format yang benar dari database
+
         return view('Admin.PembelianPakan.edit', compact('pembelianPakan', 'pakans', 'karyawans'));
     }
 
     public function update(Request $request, PembelianPakan $pembelianPakan)
     {
-        $validated = $request->validate([
+        // Bersihkan format dari input harga_satuan
+        $hargaSatuan = preg_replace('/[^0-9]/', '', $request->harga_satuan);
+
+        // Bersihkan format dari input jumlah
+        $jumlah = str_replace(',', '.', $request->jumlah);
+
+        // Validasi
+        $request->validate([
             'pakan_id' => 'required|exists:pakans,id',
             'karyawans_id' => 'required|exists:karyawans,id',
             'tanggal' => 'required|date',
-            'jumlah' => 'required|numeric|min:0.01',
-            'harga_satuan' => 'required|numeric|min:0',
             'keterangan' => 'nullable|string'
         ]);
 
-        $validated['total_harga'] = $validated['jumlah'] * $validated['harga_satuan'];
+        // Validasi manual untuk jumlah dan harga
+        if (!is_numeric($jumlah) || $jumlah <= 0) {
+            return back()->withErrors(['jumlah' => 'Jumlah harus berupa angka positif'])->withInput();
+        }
 
-        DB::transaction(function () use ($validated, $pembelianPakan) {
+        if (!is_numeric($hargaSatuan) || $hargaSatuan < 0) {
+            return back()->withErrors(['harga_satuan' => 'Harga satuan harus berupa angka positif'])->withInput();
+        }
+
+        // Hitung total harga
+        $totalHarga = $jumlah * $hargaSatuan;
+
+        DB::transaction(function () use ($request, $pembelianPakan, $jumlah, $hargaSatuan, $totalHarga) {
+            // Kembalikan stok pakan lama
             $oldPakan = Pakan::find($pembelianPakan->pakan_id);
             $oldPakan->stok -= $pembelianPakan->jumlah;
             $oldPakan->save();
 
-            $newPakan = Pakan::find($validated['pakan_id']);
-            $newPakan->stok += $validated['jumlah'];
+            // Tambah stok pakan baru
+            $newPakan = Pakan::find($request->pakan_id);
+            $newPakan->stok += $jumlah;
             $newPakan->save();
 
-            $pembelianPakan->update($validated);
+            // Update data pembelian
+            $pembelianPakan->update([
+                'pakan_id' => $request->pakan_id,
+                'karyawans_id' => $request->karyawans_id,
+                'tanggal' => $request->tanggal,
+                'jumlah' => $jumlah,
+                'harga_satuan' => $hargaSatuan,
+                'total_harga' => $totalHarga,
+                'keterangan' => $request->keterangan
+            ]);
         });
 
         return redirect()->route('admin.pembelian-pakan.index')
@@ -119,10 +175,12 @@ class PembelianPakanController extends Controller
     public function destroy(PembelianPakan $pembelianPakan)
     {
         DB::transaction(function () use ($pembelianPakan) {
+            // Kurangi stok pakan
             $pakan = Pakan::find($pembelianPakan->pakan_id);
             $pakan->stok -= $pembelianPakan->jumlah;
             $pakan->save();
 
+            // Hapus pembelian
             $pembelianPakan->delete();
         });
 

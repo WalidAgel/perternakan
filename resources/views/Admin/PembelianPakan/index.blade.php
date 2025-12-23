@@ -69,10 +69,18 @@
                         </span>
                     </td>
                     <td class="p-3 font-medium">{{ $pembelian->pakan->nama_pakan }}</td>
-                    <td class="p-3">{{ number_format($pembelian->jumlah, 2, ',', '.') }} Kg</td>
-                    <td class="p-3">Rp {{ number_format($pembelian->harga_satuan, 0, ',', '.') }}</td>
                     <td class="p-3">
-                        <span class="px-2 py-1 bg-green-100 text-green-700 rounded text-sm font-semibold">
+                        <span class="px-2 py-1 bg-blue-100 text-blue-700 rounded text-sm font-semibold">
+                            {{ number_format($pembelian->jumlah, 2, ',', '.') }} Kg
+                        </span>
+                    </td>
+                    <td class="p-3">
+                        <span class="text-gray-700 font-medium">
+                            Rp {{ number_format($pembelian->harga_satuan, 0, ',', '.') }}
+                        </span>
+                    </td>
+                    <td class="p-3">
+                        <span class="px-3 py-1 bg-green-100 text-green-700 rounded-lg text-sm font-bold">
                             Rp {{ number_format($pembelian->total_harga, 0, ',', '.') }}
                         </span>
                     </td>

@@ -8,8 +8,9 @@
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
         <div class="bg-white shadow rounded-xl p-5">
-            <div class="text-sm text-gray-500">Total Pendapatan</div>
-            <div class="text-2xl font-bold text-green-600">Rp {{ number_format($totalPendapatan, 0, ',', '.') }}</div>
+            <div class="text-sm text-gray-500">Total Telur Bagus</div>
+            <div class="text-2xl font-bold text-green-600">{{ number_format($totalPendapatan, 0) }} butir</div>
+            <p class="text-xs text-gray-500 mt-1">Total produksi telur berkualitas baik</p>
         </div>
     </div>
 
@@ -62,10 +63,14 @@
                             {{ $pendapatan->tanggal->format('d/m/Y') }}
                         </span>
                     </td>
-                    <td class="p-3 font-medium">{{ $pendapatan->kandang->nama_kandang }}</td>
+                    <td class="p-3 font-medium">
+                        <span class="px-3 py-1 bg-orange-100 text-orange-700 rounded-lg text-sm font-semibold">
+                            {{ $pendapatan->kandang->nama_kandang }}
+                        </span>
+                    </td>
                     <td class="p-3">
-                        <span class="px-2 py-1 bg-green-100 text-green-700 rounded text-sm font-semibold">
-                            {{ number_format($pendapatan->jumlah) }} butir
+                        <span class="px-3 py-1 bg-green-100 text-green-700 rounded-lg text-sm font-semibold">
+                            {{ number_format($pendapatan->jumlah, 0) }} butir
                         </span>
                     </td>
                     <td class="p-3 text-gray-600">{{ $pendapatan->keterangan ?? '-' }}</td>

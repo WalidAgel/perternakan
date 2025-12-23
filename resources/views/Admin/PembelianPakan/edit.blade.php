@@ -43,7 +43,8 @@
                         <div class="relative">
                             <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
                                 </svg>
                             </span>
                             <select name="pakan_id" id="pakan_id" required
@@ -60,7 +61,8 @@
                             </select>
                             <span class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7" />
                                 </svg>
                             </span>
                         </div>
@@ -77,7 +79,8 @@
                         <div class="relative">
                             <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                                 </svg>
                             </span>
                             <select name="karyawans_id" id="karyawans_id" required
@@ -86,14 +89,16 @@
                                    @error('karyawans_id') border-red-500 @enderror">
                                 <option value="">-- Pilih Karyawan --</option>
                                 @foreach ($karyawans as $karyawan)
-                                    <option value="{{ $karyawan->id }}" {{ old('karyawans_id', $pembelianPakan->karyawans_id) == $karyawan->id ? 'selected' : '' }}>
+                                    <option value="{{ $karyawan->id }}"
+                                        {{ old('karyawans_id', $pembelianPakan->karyawans_id) == $karyawan->id ? 'selected' : '' }}>
                                         {{ $karyawan->nama }}
                                     </option>
                                 @endforeach
                             </select>
                             <span class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7" />
                                 </svg>
                             </span>
                         </div>
@@ -110,7 +115,8 @@
                         <div class="relative">
                             <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                 </svg>
                             </span>
                             <input type="date" name="tanggal" id="tanggal" required
@@ -133,12 +139,12 @@
                         <div class="relative">
                             <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" />
                                 </svg>
                             </span>
                             <input type="text" name="jumlah" id="jumlah" required inputmode="decimal"
-                                placeholder="0"
-                                value="{{ old('jumlah', $pembelianPakan->jumlah) }}"
+                                placeholder="0" value="{{ old('jumlah', $pembelianPakan->jumlah) }}"
                                 class="w-full pl-12 pr-16 py-3 border border-gray-300 rounded-xl
                                    focus:ring-2 focus:ring-orange-500 focus:border-orange-500
                                    @error('jumlah') border-red-500 @enderror">
@@ -158,8 +164,7 @@
                         <div class="relative">
                             <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 font-medium">Rp</span>
                             <input type="text" name="harga_satuan" id="harga_satuan" required inputmode="numeric"
-                                placeholder="0"
-                                value="{{ old('harga_satuan', $pembelianPakan->harga_satuan) }}"
+                                placeholder="0" value="{{ old('harga_satuan', $pembelianPakan->harga_satuan) }}"
                                 class="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl
                                    focus:ring-2 focus:ring-orange-500 focus:border-orange-500
                                    @error('harga_satuan') border-red-500 @enderror">
@@ -177,11 +182,11 @@
                         <div class="relative">
                             <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
                             </span>
-                            <input type="text" id="total_harga_display" readonly
-                                placeholder="Rp 0"
+                            <input type="text" id="total_harga_display" readonly placeholder="Rp 0"
                                 class="w-full pl-12 pr-4 py-3 border-2 border-green-300 rounded-xl bg-green-50
                                    text-green-800 font-bold text-lg cursor-not-allowed">
                         </div>
@@ -208,13 +213,17 @@
                 {{-- Warning Box --}}
                 <div class="bg-yellow-50 border border-yellow-200 rounded-xl p-4">
                     <div class="flex items-start gap-3">
-                        <svg class="w-5 h-5 text-yellow-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                        <svg class="w-5 h-5 text-yellow-600 mt-0.5 flex-shrink-0" fill="currentColor"
+                            viewBox="0 0 20 20">
+                            <path fill-rule="evenodd"
+                                d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                                clip-rule="evenodd" />
                         </svg>
                         <div class="text-sm text-yellow-800">
                             <p class="font-semibold mb-1">Peringatan:</p>
                             <p class="text-yellow-700">
-                                Mengubah data pembelian pakan akan mempengaruhi stok pakan dan catatan pengeluaran. Pastikan perubahan sudah sesuai dengan kondisi aktual.
+                                Mengubah data pembelian pakan akan mempengaruhi stok pakan dan catatan pengeluaran. Pastikan
+                                perubahan sudah sesuai dengan kondisi aktual.
                             </p>
                         </div>
                     </div>
@@ -229,7 +238,9 @@
                            text-white font-semibold px-6 py-3 rounded-xl
                            shadow-lg hover:shadow-xl active:scale-95 transition">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15">
+                            </path>
                         </svg>
                         Update Pembelian
                     </button>
@@ -239,7 +250,8 @@
                           bg-gray-100 hover:bg-gray-200
                           text-gray-700 font-medium px-6 py-3 rounded-xl transition">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12">
                             </path>
                         </svg>
                         Batal
@@ -258,22 +270,47 @@
             const hargaSatuanInput = document.getElementById('harga_satuan');
             const totalDisplay = document.getElementById('total_harga_display');
 
-            // Format harga satuan dengan ribuan
-            function formatHargaSatuan() {
+            // Format harga satuan dengan ribuan - FORMAT NILAI AWAL
+            function formatInitialHarga() {
                 let raw = hargaSatuanInput.value.replace(/[^0-9]/g, '');
+                if (raw) {
+                    let number = parseInt(raw, 10);
+                    hargaSatuanInput.value = new Intl.NumberFormat('id-ID').format(number);
+                }
+            }
+
+            // Format nilai awal saat halaman dimuat
+            formatInitialHarga();
+
+            // Format jumlah awal (jika ada)
+            if (jumlahInput.value) {
+                let value = jumlahInput.value.replace(/[^0-9.]/g, '');
+                const parts = value.split('.');
+                if (parts.length === 2 && parts[1].length > 2) {
+                    value = parts[0] + '.' + parts[1].substring(0, 2);
+                }
+                jumlahInput.value = value;
+            }
+
+            // Hitung total awal
+            calculateTotal();
+
+            // Event handler untuk harga satuan
+            hargaSatuanInput.addEventListener('input', function() {
+                let raw = this.value.replace(/[^0-9]/g, '');
                 if (!raw) {
-                    hargaSatuanInput.value = '';
+                    this.value = '';
                     calculateTotal();
                     return;
                 }
                 let number = parseInt(raw, 10);
-                hargaSatuanInput.value = new Intl.NumberFormat('id-ID').format(number);
+                this.value = new Intl.NumberFormat('id-ID').format(number);
                 calculateTotal();
-            }
+            });
 
-            // Format jumlah (support decimal)
-            function formatJumlah() {
-                let value = jumlahInput.value.replace(/[^0-9.]/g, '');
+            // Event handler untuk jumlah (support decimal)
+            jumlahInput.addEventListener('input', function() {
+                let value = this.value.replace(/[^0-9.]/g, '');
                 const parts = value.split('.');
                 if (parts.length > 2) {
                     value = parts[0] + '.' + parts.slice(1).join('');
@@ -281,9 +318,9 @@
                 if (parts.length === 2 && parts[1].length > 2) {
                     value = parts[0] + '.' + parts[1].substring(0, 2);
                 }
-                jumlahInput.value = value;
+                this.value = value;
                 calculateTotal();
-            }
+            });
 
             // Hitung total
             function calculateTotal() {
@@ -298,15 +335,6 @@
                     totalDisplay.value = 'Rp 0';
                 }
             }
-
-            // Event listeners
-            hargaSatuanInput.addEventListener('input', formatHargaSatuan);
-            jumlahInput.addEventListener('input', formatJumlah);
-
-            // Format nilai awal saat halaman dimuat
-            formatHargaSatuan();
-            formatJumlah();
-            calculateTotal();
 
             // Before submit, convert formatted values to raw numbers
             document.querySelector('form').addEventListener('submit', function() {

@@ -21,13 +21,29 @@ class PakanController extends Controller
 
     public function store(Request $request)
     {
+        // Bersihkan format dari input harga dan stok
+        $hargaPakan = preg_replace('/[^0-9]/', '', $request->harga_pakan);
+        $stok = str_replace(',', '.', $request->stok); // Ganti koma dengan titik untuk desimal
+
         $validated = $request->validate([
             'nama_pakan' => 'required|string|max:255',
-            'harga_pakan' => 'required|numeric|min:0',
-            'stok' => 'required|numeric|min:0'
         ]);
 
-        Pakan::create($validated);
+        // Validasi manual untuk harga dan stok
+        if (!is_numeric($hargaPakan) || $hargaPakan < 0) {
+            return back()->withErrors(['harga_pakan' => 'Harga pakan harus berupa angka positif'])->withInput();
+        }
+
+        if (!is_numeric($stok) || $stok < 0) {
+            return back()->withErrors(['stok' => 'Stok harus berupa angka positif'])->withInput();
+        }
+
+        // Simpan dengan nilai yang sudah dibersihkan
+        Pakan::create([
+            'nama_pakan' => $validated['nama_pakan'],
+            'harga_pakan' => $hargaPakan,
+            'stok' => $stok
+        ]);
 
         return redirect()->route('admin.pakan.index')
             ->with('success', 'Pakan berhasil ditambahkan');
@@ -40,13 +56,29 @@ class PakanController extends Controller
 
     public function update(Request $request, Pakan $pakan)
     {
+        // Bersihkan format dari input harga dan stok
+        $hargaPakan = preg_replace('/[^0-9]/', '', $request->harga_pakan);
+        $stok = str_replace(',', '.', $request->stok);
+
         $validated = $request->validate([
             'nama_pakan' => 'required|string|max:255',
-            'harga_pakan' => 'required|numeric|min:0',
-            'stok' => 'required|numeric|min:0'
         ]);
 
-        $pakan->update($validated);
+        // Validasi manual untuk harga dan stok
+        if (!is_numeric($hargaPakan) || $hargaPakan < 0) {
+            return back()->withErrors(['harga_pakan' => 'Harga pakan harus berupa angka positif'])->withInput();
+        }
+
+        if (!is_numeric($stok) || $stok < 0) {
+            return back()->withErrors(['stok' => 'Stok harus berupa angka positif'])->withInput();
+        }
+
+        // Update dengan nilai yang sudah dibersihkan
+        $pakan->update([
+            'nama_pakan' => $validated['nama_pakan'],
+            'harga_pakan' => $hargaPakan,
+            'stok' => $stok
+        ]);
 
         return redirect()->route('admin.pakan.index')
             ->with('success', 'Pakan berhasil diperbarui');

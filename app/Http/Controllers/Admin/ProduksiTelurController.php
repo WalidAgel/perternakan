@@ -54,17 +54,19 @@ class ProduksiTelurController extends Controller
             'catatan' => 'nullable|string'
         ]);
 
+        // Total jumlah dalam BUTIR
         $validated['jumlah'] = $validated['jumlah_bagus'] + $validated['jumlah_rusak'];
 
         DB::transaction(function () use ($validated) {
             $produksi = ProduksiTelur::create($validated);
 
+            // Simpan pendapatan kandang dalam BUTIR (bukan kg)
             if ($validated['jumlah_bagus'] > 0) {
                 PendapatanKandang::create([
                     'kandang_id' => $validated['kandang_id'],
                     'produksi_telur_id' => $produksi->id,
                     'tanggal' => $validated['tanggal'],
-                    'jumlah' => $validated['jumlah_bagus'],
+                    'jumlah' => $validated['jumlah_bagus'], // Simpan dalam BUTIR
                     'keterangan' => 'Produksi telur bagus dari kandang'
                 ]);
             }
@@ -96,19 +98,22 @@ class ProduksiTelurController extends Controller
             'catatan' => 'nullable|string'
         ]);
 
+        // Total jumlah dalam BUTIR
         $validated['jumlah'] = $validated['jumlah_bagus'] + $validated['jumlah_rusak'];
 
         DB::transaction(function () use ($validated, $data) {
             $data->update($validated);
 
+            // Hapus pendapatan lama
             PendapatanKandang::where('produksi_telur_id', $data->id)->delete();
 
+            // Buat pendapatan baru dengan jumlah dalam BUTIR
             if ($validated['jumlah_bagus'] > 0) {
                 PendapatanKandang::create([
                     'kandang_id' => $validated['kandang_id'],
                     'produksi_telur_id' => $data->id,
                     'tanggal' => $validated['tanggal'],
-                    'jumlah' => $validated['jumlah_bagus'],
+                    'jumlah' => $validated['jumlah_bagus'], // Simpan dalam BUTIR
                     'keterangan' => 'Produksi telur bagus dari kandang'
                 ]);
             }

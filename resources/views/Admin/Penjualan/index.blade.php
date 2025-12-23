@@ -28,7 +28,7 @@
                         <option value="">-- Pilih Produksi --</option>
                         @foreach ($produksiList as $p)
                             <option value="{{ $p->id }}" {{ request('produksi_id') == $p->id ? 'selected' : '' }}>
-                                Produksi #{{ $p->id }} - {{ \Carbon\Carbon::parse($p->tanggal)->format('d M Y') }}
+                                {{ $p->kandang->nama_kandang ?? 'Kandang' }} - {{ \Carbon\Carbon::parse($p->tanggal)->format('d M Y') }}
                             </option>
                         @endforeach
                     </select>
@@ -48,7 +48,7 @@
                 <thead class="bg-gray-50 text-gray-700 text-sm uppercase">
                     <tr>
                         <th class="p-3 text-left">Tanggal</th>
-                        <th class="p-3 text-left">Produksi</th>
+                        <th class="p-3 text-left">Kandang</th>
                         <th class="p-3 text-left">Jumlah Terjual</th>
                         <th class="p-3 text-left">Harga/kg</th>
                         <th class="p-3 text-left">Total</th>
@@ -64,25 +64,33 @@
                             </td>
 
                             <td class="p-3">
-                                @if ($row->produksiTelur)
-                                    <span class="px-2 py-1 bg-orange-100 text-orange-700 rounded text-sm">
-                                        Produksi {{ $row->produksiTelur->kandang->nama ?? 'Kandang' }}
+                                @if ($row->produksiTelur && $row->produksiTelur->kandang)
+                                    <span class="px-3 py-1 bg-orange-100 text-orange-700 rounded-lg text-sm font-semibold">
+                                        {{ $row->produksiTelur->kandang->nama_kandang }}
                                     </span>
                                     <br>
-                                    <small class="text-gray-500">
-                                        {{ \Carbon\Carbon::parse($row->produksiTelur->tanggal)->format('d M Y') }} |
-                                        {{ number_format($row->produksiTelur->jumlah) }} butir
+                                    <small class="text-gray-500 text-xs mt-1 block">
+                                        Produksi: {{ \Carbon\Carbon::parse($row->produksiTelur->tanggal)->format('d M Y') }}
+                                        | {{ number_format($row->produksiTelur->jumlah) }} butir
                                     </small>
                                 @else
                                     <span class="text-red-600 text-sm">Tidak ada data</span>
                                 @endif
                             </td>
 
-                            <td class="p-3">{{ number_format($row->jumlah_terjual, 2) }} kg</td>
+                            <td class="p-3">
+                                <span class="px-2 py-1 bg-blue-100 text-blue-700 rounded text-sm font-semibold">
+                                    {{ number_format($row->jumlah_terjual, 2) }} kg
+                                </span>
+                            </td>
 
-                            <td class="p-3">Rp {{ number_format($row->harga_per_kg, 0, ',', '.') }}</td>
+                            <td class="p-3">
+                                <span class="text-gray-700 font-medium">
+                                    Rp {{ number_format($row->harga_per_kg, 0, ',', '.') }}
+                                </span>
+                            </td>
 
-                            <td class="p-3 font-semibold text-orange-700">
+                            <td class="p-3 font-semibold text-green-700">
                                 Rp {{ number_format($row->total, 0, ',', '.') }}
                             </td>
 
