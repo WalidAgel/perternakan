@@ -30,178 +30,280 @@
 
         <div class="p-4 md:p-8">
 
-            <!-- Header -->
-            <div class="mb-8">
-                <h1 class="text-3xl font-bold text-white mb-2">Input Produksi Telur</h1>
-                <p class="text-white/80">Catat hasil produksi telur harian Anda</p>
+            <!-- HEADER ORANGE -->
+            <div class="bg-orange-500 rounded-2xl px-6 py-8 mb-8 shadow-lg">
+                <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                    <div>
+                        <h1 class="text-2xl md:text-3xl font-bold text-white">
+                            Input Produksi Telur
+                        </h1>
+                        <p class="text-orange-100 mt-1 text-sm">
+                            Catat hasil produksi telur harian Anda
+                        </p>
+                    </div>
+                    <a href="{{ route('karyawan.riwayat.produksi') }}"
+                        class="inline-flex items-center gap-2 bg-white/20 hover:bg-white/30
+                          text-white px-5 py-2.5 rounded-xl transition">
+                        Lihat Riwayat →
+                    </a>
+                </div>
             </div>
 
             <!-- Alert Success/Error -->
             @if(session('success'))
-            <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded-lg mb-6 flex items-center justify-between animate-fade-in">
-                <div class="flex items-center">
-                    <svg class="w-6 h-6 mr-3" fill="currentColor" viewBox="0 0 20 20">
+            <div class="bg-green-50 border-l-4 border-green-500 rounded-xl p-4 mb-6">
+                <div class="flex items-start gap-3">
+                    <svg class="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
                     </svg>
-                    <span class="font-medium">{{ session('success') }}</span>
+                    <div class="flex-1">
+                        <p class="font-semibold text-green-800">{{ session('success') }}</p>
+                    </div>
+                    <button onclick="this.parentElement.parentElement.remove()" class="text-green-700 hover:text-green-900">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                        </svg>
+                    </button>
                 </div>
-                <button onclick="this.parentElement.remove()" class="text-green-700 hover:text-green-900">
-                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
-                    </svg>
-                </button>
             </div>
             @endif
 
             @if(session('error'))
-            <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded-lg mb-6 flex items-center justify-between animate-fade-in">
-                <div class="flex items-center">
-                    <svg class="w-6 h-6 mr-3" fill="currentColor" viewBox="0 0 20 20">
+            <div class="bg-red-50 border-l-4 border-red-500 rounded-xl p-4 mb-6">
+                <div class="flex items-start gap-3">
+                    <svg class="w-5 h-5 text-red-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
                     </svg>
-                    <span class="font-medium">{{ session('error') }}</span>
+                    <div class="flex-1">
+                        <p class="font-semibold text-red-800">{{ session('error') }}</p>
+                    </div>
+                    <button onclick="this.parentElement.parentElement.remove()" class="text-red-700 hover:text-red-900">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                        </svg>
+                    </button>
                 </div>
-                <button onclick="this.parentElement.remove()" class="text-red-700 hover:text-red-900">
-                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
-                    </svg>
-                </button>
             </div>
             @endif
 
-            <!-- Form Input -->
-            <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8 mb-8">
-                <div class="flex items-center mb-6">
-                    <div class="bg-blue-100 p-3 rounded-xl mr-4">
-                        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-                        </svg>
-                    </div>
-                    <div>
-                        <h2 class="text-2xl font-bold text-gray-800">Form Input Produksi</h2>
-                        <p class="text-sm text-gray-600">Isi data produksi telur hari ini</p>
+            @if($errors->any())
+            <div class="bg-red-50 border-l-4 border-red-500 rounded-xl p-4 mb-6">
+                <div class="flex items-start gap-3">
+                    <svg class="w-5 h-5 text-red-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                    </svg>
+                    <div class="flex-1">
+                        <p class="font-semibold text-red-800 mb-2">Terdapat kesalahan:</p>
+                        <ul class="list-disc list-inside space-y-1 text-red-700 text-sm">
+                            @foreach($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
                     </div>
                 </div>
+            </div>
+            @endif
+
+            <!-- CARD FORM -->
+            <div class="bg-white rounded-2xl shadow-xl p-6 md:p-8 mb-8">
 
                 <form action="{{ route('karyawan.produksi.store') }}" method="POST" class="space-y-6">
                     @csrf
 
+                    <!-- Grid 2 Kolom -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-                        <!-- Tanggal -->
+                        <!-- Kandang -->
                         <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">
-                                Tanggal Produksi <span class="text-red-600">*</span>
+                            <label for="kandang_id" class="block text-sm font-semibold text-gray-700 mb-2">
+                                Kandang <span class="text-red-500">*</span>
                             </label>
                             <div class="relative">
-                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                                    </svg>
+                                </span>
+                                <select name="kandang_id" id="kandang_id" required
+                                    class="w-full pl-12 pr-10 py-3 border border-gray-300 rounded-xl appearance-none bg-white
+                                       focus:ring-2 focus:ring-orange-500 focus:border-orange-500
+                                       @error('kandang_id') border-red-500 @enderror">
+                                    <option value="">-- Pilih Kandang --</option>
+                                    @foreach ($kandangs ?? [] as $k)
+                                        <option value="{{ $k->id }}" {{ old('kandang_id') == $k->id ? 'selected' : '' }}>
+                                            {{ $k->nama_kandang }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                <span class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                    </svg>
+                                </span>
+                            </div>
+                            @error('kandang_id')
+                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <!-- Tanggal Produksi -->
+                        <div>
+                            <label for="tanggal" class="block text-sm font-semibold text-gray-700 mb-2">
+                                Tanggal Produksi <span class="text-red-500">*</span>
+                            </label>
+                            <div class="relative">
+                                <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                                     </svg>
-                                </div>
-                                <input type="date" name="tanggal" value="{{ old('tanggal', date('Y-m-d')) }}" required
-                                    class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 @error('tanggal') border-red-500 @enderror">
+                                </span>
+                                <input type="date" name="tanggal" id="tanggal" required
+                                    value="{{ old('tanggal', date('Y-m-d')) }}"
+                                    max="{{ date('Y-m-d') }}"
+                                    class="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl
+                                       focus:ring-2 focus:ring-orange-500 focus:border-orange-500
+                                       @error('tanggal') border-red-500 @enderror">
                             </div>
                             @error('tanggal')
-                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                             @enderror
                         </div>
 
-                        <!-- Jumlah Telur -->
+                        <!-- Jumlah Telur Bagus -->
                         <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">
-                                Jumlah Telur (Kg) <span class="text-red-600">*</span>
+                            <label for="jumlah_bagus" class="block text-sm font-semibold text-gray-700 mb-2">
+                                Jumlah Telur Bagus <span class="text-red-500">*</span>
                             </label>
                             <div class="relative">
-                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14"/>
+                                <span class="absolute left-4 top-1/2 -translate-y-1/2 text-green-500">
+                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
                                     </svg>
-                                </div>
-                                <input type="number" name="jumlah" value="{{ old('jumlah') }}" step="0.01" min="0" required
-                                    placeholder="Contoh: 120.5"
-                                    class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 @error('jumlah') border-red-500 @enderror">
+                                </span>
+                                <input type="number" name="jumlah_bagus" id="jumlah_bagus" required min="0" step="1"
+                                    placeholder="0"
+                                    value="{{ old('jumlah_bagus', 0) }}"
+                                    class="w-full pl-12 pr-16 py-3 border border-gray-300 rounded-xl
+                                       focus:ring-2 focus:ring-orange-500 focus:border-orange-500
+                                       @error('jumlah_bagus') border-red-500 @enderror">
+                                <span class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 font-medium">Butir</span>
                             </div>
-                            @error('jumlah')
-                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            @error('jumlah_bagus')
+                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                             @enderror
                         </div>
 
-                    </div>
-
-                    <!-- Kualitas Telur -->
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-3">
-                            Kualitas Telur <span class="text-red-600">*</span>
-                        </label>
-                        <div class="grid grid-cols-3 gap-4">
-
-                            <!-- Grade A -->
-                            <label class="relative flex flex-col items-center p-4 border-2 border-gray-300 rounded-xl cursor-pointer hover:border-green-500 transition group @error('kualitas') border-red-500 @enderror">
-                                <input type="radio" name="kualitas" value="A" {{ old('kualitas') === 'A' ? 'checked' : '' }} required
-                                    class="absolute top-3 right-3 w-5 h-5 text-green-600">
-                                <div class="text-4xl mb-2 group-hover:scale-110 transition">🥚</div>
-                                <span class="font-bold text-lg text-gray-800">Grade A</span>
-                                <span class="text-xs text-gray-500 mt-1">Kualitas Terbaik</span>
+                        <!-- Jumlah Telur Rusak -->
+                        <div>
+                            <label for="jumlah_rusak" class="block text-sm font-semibold text-gray-700 mb-2">
+                                Jumlah Telur Rusak <span class="text-red-500">*</span>
                             </label>
-
-                            <!-- Grade B -->
-                            <label class="relative flex flex-col items-center p-4 border-2 border-gray-300 rounded-xl cursor-pointer hover:border-yellow-500 transition group @error('kualitas') border-red-500 @enderror">
-                                <input type="radio" name="kualitas" value="B" {{ old('kualitas') === 'B' ? 'checked' : '' }} required
-                                    class="absolute top-3 right-3 w-5 h-5 text-yellow-600">
-                                <div class="text-4xl mb-2 group-hover:scale-110 transition">🥚</div>
-                                <span class="font-bold text-lg text-gray-800">Grade B</span>
-                                <span class="text-xs text-gray-500 mt-1">Kualitas Sedang</span>
-                            </label>
-
-                            <!-- Grade C -->
-                            <label class="relative flex flex-col items-center p-4 border-2 border-gray-300 rounded-xl cursor-pointer hover:border-red-500 transition group @error('kualitas') border-red-500 @enderror">
-                                <input type="radio" name="kualitas" value="C" {{ old('kualitas') === 'C' ? 'checked' : '' }} required
-                                    class="absolute top-3 right-3 w-5 h-5 text-red-600">
-                                <div class="text-4xl mb-2 group-hover:scale-110 transition">🥚</div>
-                                <span class="font-bold text-lg text-gray-800">Grade C</span>
-                                <span class="text-xs text-gray-500 mt-1">Kualitas Rendah</span>
-                            </label>
-
+                            <div class="relative">
+                                <span class="absolute left-4 top-1/2 -translate-y-1/2 text-red-500">
+                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                                    </svg>
+                                </span>
+                                <input type="number" name="jumlah_rusak" id="jumlah_rusak" required min="0" step="1"
+                                    placeholder="0"
+                                    value="{{ old('jumlah_rusak', 0) }}"
+                                    class="w-full pl-12 pr-16 py-3 border border-gray-300 rounded-xl
+                                       focus:ring-2 focus:ring-orange-500 focus:border-orange-500
+                                       @error('jumlah_rusak') border-red-500 @enderror">
+                                <span class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 font-medium">Butir</span>
+                            </div>
+                            @error('jumlah_rusak')
+                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
-                        @error('kualitas')
-                        <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
-                        @enderror
+
+                        <!-- Total Produksi (Display Only) -->
+                        <div class="md:col-span-2">
+                            <label for="total_produksi" class="block text-sm font-semibold text-gray-700 mb-2">
+                                Total Produksi
+                            </label>
+                            <div class="relative">
+                                <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                    </svg>
+                                </span>
+                                <input type="text" id="total_produksi" readonly
+                                    placeholder="0 butir"
+                                    class="w-full pl-12 pr-16 py-3 border-2 border-blue-300 rounded-xl bg-blue-50
+                                       text-blue-800 font-bold text-lg cursor-not-allowed">
+                                <span class="absolute right-4 top-1/2 -translate-y-1/2 text-blue-600 font-medium">Butir</span>
+                            </div>
+                            <p class="text-gray-500 text-xs mt-1">Total = Telur Bagus + Telur Rusak</p>
+                        </div>
+
+                        <!-- Hidden input untuk jumlah total (dalam butir) -->
+                        <input type="hidden" name="jumlah" id="jumlah_total">
+
+                        <!-- Kualitas (default A) -->
+                        <input type="hidden" name="kualitas" value="A">
+
                     </div>
 
                     <!-- Catatan -->
                     <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">
-                            Catatan <span class="text-gray-400">(Opsional)</span>
+                        <label for="keterangan" class="block text-sm font-semibold text-gray-700 mb-2">
+                            Catatan
                         </label>
-                        <textarea name="keterangan" rows="4"
-                            placeholder="Tambahkan catatan atau informasi tambahan tentang produksi hari ini..."
-                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 @error('keterangan') border-red-500 @enderror">{{ old('keterangan') }}</textarea>
+                        <textarea name="keterangan" id="keterangan" rows="4"
+                            placeholder="Tulis catatan tambahan seperti kondisi telur, kendala produksi, atau informasi lainnya (opsional)..."
+                            class="w-full px-4 py-3 border border-gray-300 rounded-xl
+                               focus:ring-2 focus:ring-orange-500 focus:border-orange-500
+                               @error('keterangan') border-red-500 @enderror">{{ old('keterangan') }}</textarea>
                         @error('keterangan')
-                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                         @enderror
-                        <p class="text-xs text-gray-500 mt-1">Contoh: Cuaca cerah, ayam dalam kondisi sehat</p>
                     </div>
 
-                    <!-- Buttons -->
-                    <div class="flex gap-3 pt-4 border-t border-gray-200">
+                    <!-- Info Box -->
+                    <div class="bg-blue-50 border border-blue-200 rounded-xl p-4">
+                        <div class="flex items-start gap-3">
+                            <svg class="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+                            </svg>
+                            <div class="text-sm text-blue-800">
+                                <p class="font-semibold mb-1">Informasi:</p>
+                                <ul class="list-disc list-inside space-y-1 text-blue-700">
+                                    <li>Pilih kandang tempat produksi telur</li>
+                                    <li>Input jumlah dalam satuan butir</li>
+                                    <li>Pastikan data yang diinput sesuai dengan kondisi aktual di lapangan</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- DIVIDER -->
+                    <div class="border-t pt-6 flex flex-col sm:flex-row gap-3">
+
                         <button type="submit"
-                            class="flex-1 md:flex-none px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-md transition duration-300 flex items-center justify-center gap-2">
+                            class="inline-flex items-center justify-center gap-2
+                               bg-orange-500 hover:bg-orange-600
+                               text-white font-semibold px-6 py-3 rounded-xl
+                               shadow-lg hover:shadow-xl active:scale-95 transition">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                             </svg>
                             Simpan Produksi
                         </button>
+
                         <button type="reset"
-                            class="px-6 py-3 bg-gray-500 hover:bg-gray-600 text-white font-semibold rounded-lg shadow-md transition duration-300 flex items-center justify-center gap-2">
+                            class="inline-flex items-center justify-center gap-2
+                              bg-gray-100 hover:bg-gray-200
+                              text-gray-700 font-medium px-6 py-3 rounded-xl transition">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
                             </svg>
                             Reset
                         </button>
-                    </div>
 
+                    </div>
                 </form>
+
             </div>
 
             <!-- Riwayat Input Hari Ini -->
@@ -219,7 +321,7 @@
                         </div>
                     </div>
                     <a href="{{ route('karyawan.riwayat.produksi') }}"
-                        class="text-blue-600 hover:text-blue-700 text-sm font-medium flex items-center gap-1">
+                        class="text-orange-600 hover:text-orange-700 text-sm font-medium flex items-center gap-1">
                         Lihat Semua
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
@@ -232,8 +334,10 @@
                         <thead class="bg-gray-50 text-gray-700 text-sm uppercase">
                             <tr>
                                 <th class="p-4 text-left font-semibold">Waktu</th>
-                                <th class="p-4 text-left font-semibold">Jumlah (Kg)</th>
-                                <th class="p-4 text-left font-semibold">Kualitas</th>
+                                <th class="p-4 text-left font-semibold">Kandang</th>
+                                <th class="p-4 text-left font-semibold">Total</th>
+                                <th class="p-4 text-left font-semibold">Telur Bagus</th>
+                                <th class="p-4 text-left font-semibold">Telur Rusak</th>
                                 <th class="p-4 text-left font-semibold">Keterangan</th>
                                 <th class="p-4 text-center font-semibold">Aksi</th>
                             </tr>
@@ -242,29 +346,34 @@
                             @forelse($produksiHariIni ?? [] as $item)
                             <tr class="hover:bg-gray-50 transition">
                                 <td class="p-4">{{ $item->created_at->format('H:i') }} WIB</td>
-                                <td class="p-4 font-semibold text-blue-600">{{ number_format($item->jumlah, 2) }} Kg</td>
                                 <td class="p-4">
-                                    @if($item->kualitas == 'A')
-                                        <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-semibold">Grade A</span>
-                                    @elseif($item->kualitas == 'B')
-                                        <span class="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-sm font-semibold">Grade B</span>
-                                    @else
-                                        <span class="px-3 py-1 bg-red-100 text-red-800 rounded-full text-sm font-semibold">Grade C</span>
-                                    @endif
+                                    <span class="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm font-semibold">
+                                        {{ $item->kandang->nama_kandang ?? '-' }}
+                                    </span>
+                                </td>
+                                <td class="p-4 font-semibold text-blue-600">{{ number_format($item->jumlah ?? 0) }} butir</td>
+                                <td class="p-4">
+                                    <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-semibold">
+                                        {{ number_format($item->jumlah_bagus ?? 0) }} butir
+                                    </span>
+                                </td>
+                                <td class="p-4">
+                                    <span class="px-3 py-1 bg-red-100 text-red-800 rounded-full text-sm font-semibold">
+                                        {{ number_format($item->jumlah_rusak ?? 0) }} butir
+                                    </span>
                                 </td>
                                 <td class="p-4 text-sm text-gray-600">{{ $item->keterangan ?: '-' }}</td>
                                 <td class="p-4">
                                     <div class="flex gap-2 justify-center">
-                                        <a href="{{ route('karyawan.produksi.edit', $item->id) }}"
-                                            class="px-3 py-1 bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg text-sm font-medium transition">
-                                            Edit
-                                        </a>
                                         <form action="{{ route('karyawan.produksi.destroy', $item->id) }}" method="POST"
-                                            onsubmit="return confirm('Yakin ingin menghapus data ini?')">
+                                            onsubmit="return confirm('⚠️ Yakin ingin menghapus data ini?\n\nData yang dihapus tidak dapat dikembalikan!')">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit"
-                                                class="px-3 py-1 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm font-medium transition">
+                                                class="px-3 py-1 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm font-medium transition flex items-center gap-1">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                                </svg>
                                                 Hapus
                                             </button>
                                         </form>
@@ -273,7 +382,7 @@
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="5" class="text-center py-8 text-gray-500">
+                                <td colspan="7" class="text-center py-8 text-gray-500">
                                     <svg class="w-16 h-16 mx-auto mb-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/>
                                     </svg>
@@ -296,6 +405,29 @@
             const sidebar = document.getElementById("sidebar");
             sidebar.classList.toggle("-translate-x-full");
         }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const jumlahBagusInput = document.getElementById('jumlah_bagus');
+            const jumlahRusakInput = document.getElementById('jumlah_rusak');
+            const totalProduksi = document.getElementById('total_produksi');
+            const jumlahTotalInput = document.getElementById('jumlah_total');
+
+            function calculateTotal() {
+                const bagus = parseInt(jumlahBagusInput.value) || 0;
+                const rusak = parseInt(jumlahRusakInput.value) || 0;
+                const total = bagus + rusak;
+
+                // Update display dan hidden input
+                totalProduksi.value = total + ' butir';
+                jumlahTotalInput.value = total; // Simpan dalam satuan butir
+            }
+
+            jumlahBagusInput.addEventListener('input', calculateTotal);
+            jumlahRusakInput.addEventListener('input', calculateTotal);
+
+            // Calculate on page load
+            calculateTotal();
+        });
     </script>
 
 </body>

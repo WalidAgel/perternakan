@@ -39,15 +39,28 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::prefix('karyawan')->name('karyawan.')->middleware('auth')->group(function () {
 
-    // Dashboard Karyawan - ⭐ GANTI DENGAN CONTROLLER
+    // Dashboard Karyawan
     Route::get('/dashboard', [KaryawanDashboardController::class, 'dashboard'])->name('dashboard');
 
     // Input Produksi
-    Route::get('/produksi', [KaryawanProduksiTelurController::class, 'index'])->name('produksi.index');
-    Route::post('/produksi', [KaryawanProduksiTelurController::class, 'store'])->name('produksi.store');
-    Route::get('/produksi/{id}/edit', [KaryawanProduksiTelurController::class, 'edit'])->name('produksi.edit');
-    Route::put('/produksi/{id}', [KaryawanProduksiTelurController::class, 'update'])->name('produksi.update');
-    Route::delete('/produksi/{id}', [KaryawanProduksiTelurController::class, 'destroy'])->name('produksi.destroy');
+    Route::get('/produksi', [KaryawanProduksiTelurController::class, 'index'])
+        ->name('produksi.index');
+
+    Route::get('/produksi/create', [KaryawanProduksiTelurController::class, 'create'])
+        ->name('produksi.create');
+
+    Route::post('/produksi', [KaryawanProduksiTelurController::class, 'store'])
+        ->name('produksi.store');
+
+    // ⭐ TAMBAHAN ROUTE UNTUK EDIT DAN DELETE (jika diperlukan)
+    Route::get('/produksi/{id}/edit', [KaryawanProduksiTelurController::class, 'edit'])
+        ->name('produksi.edit');
+
+    Route::put('/produksi/{id}', [KaryawanProduksiTelurController::class, 'update'])
+        ->name('produksi.update');
+
+    Route::delete('/produksi/{id}', [KaryawanProduksiTelurController::class, 'destroy'])
+        ->name('produksi.destroy');
 
     // Input Pengeluaran
     Route::get('/pengeluaran', [PengeluaranController::class, 'index'])->name('pengeluaran.index');

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\karyawan;
 
 use Carbon\Carbon;
 use App\Models\Karyawan;
+use App\Models\Kandang;
 use Illuminate\Http\Request;
 use App\Models\ProduksiTelur;
 use App\Http\Controllers\Controller;
@@ -17,14 +18,18 @@ class ProduksiTelurController extends Controller
             // Ambil karyawan yang sedang login
             $karyawan = Karyawan::where('user_id', auth()->id())->first();
 
+            // ⭐ TAMBAHKAN INI - Ambil semua kandang untuk dropdown
+            $kandangs = Kandang::orderBy('nama_kandang', 'asc')->get();
+
             // Ambil produksi hari ini untuk user yang login
-            $produksiHariIni = ProduksiTelur::with('karyawan')
+            $produksiHariIni = ProduksiTelur::with(['karyawan', 'kandang'])
                 ->where('karyawans_id', $karyawan->id ?? 0)
                 ->whereDate('tanggal', Carbon::today())
                 ->orderBy('created_at', 'desc')
                 ->get();
 
-            return view('karyawan.produksi.input', compact('produksiHariIni'));
+            // ⭐ PENTING - Kirim variabel $kandangs ke view
+            return view('karyawan.produksi.input', compact('produksiHariIni', 'kandangs'));
         }
 
         // Untuk admin: tampilkan semua data dengan filter
@@ -64,11 +69,15 @@ class ProduksiTelurController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'kandang_id' => 'nullable|exists:kandangs,id',
             'tanggal' => 'required|date',
             'jumlah' => 'required|numeric|min:0',
+            'jumlah_bagus' => 'nullable|numeric|min:0',
+            'jumlah_rusak' => 'nullable|numeric|min:0',
             'kualitas' => 'required|in:A,B,C',
             'keterangan' => 'nullable|string'
         ], [
+            'kandang_id.exists' => 'Kandang tidak valid',
             'tanggal.required' => 'Tanggal harus diisi',
             'tanggal.date' => 'Format tanggal tidak valid',
             'jumlah.required' => 'Jumlah telur harus diisi',
@@ -88,8 +97,11 @@ class ProduksiTelurController extends Controller
 
             ProduksiTelur::create([
                 'karyawans_id' => $karyawan->id,
+                'kandang_id' => $request->kandang_id,
                 'tanggal' => $request->tanggal,
                 'jumlah' => $request->jumlah,
+                'jumlah_bagus' => $request->jumlah_bagus ?? 0,
+                'jumlah_rusak' => $request->jumlah_rusak ?? 0,
                 'kualitas' => $request->kualitas,
                 'keterangan' => $request->keterangan
             ]);
@@ -136,8 +148,11 @@ class ProduksiTelurController extends Controller
         $data = ProduksiTelur::findOrFail($id);
 
         $request->validate([
+            'kandang_id' => 'nullable|exists:kandangs,id',
             'tanggal' => 'required|date',
             'jumlah' => 'required|numeric|min:0',
+            'jumlah_bagus' => 'nullable|numeric|min:0',
+            'jumlah_rusak' => 'nullable|numeric|min:0',
             'kualitas' => 'required|in:A,B,C',
             'keterangan' => 'nullable|string'
         ]);
@@ -153,8 +168,11 @@ class ProduksiTelurController extends Controller
         }
 
         $data->update([
+            'kandang_id' => $request->kandang_id,
             'tanggal' => $request->tanggal,
             'jumlah' => $request->jumlah,
+            'jumlah_bagus' => $request->jumlah_bagus ?? 0,
+            'jumlah_rusak' => $request->jumlah_rusak ?? 0,
             'kualitas' => $request->kualitas,
             'keterangan' => $request->keterangan
         ]);
@@ -203,7 +221,8 @@ class ProduksiTelurController extends Controller
 
         $karyawan = Karyawan::where('user_id', auth()->id())->first();
 
-        $query = ProduksiTelur::where('karyawans_id', $karyawan->id ?? 0);
+        $query = ProduksiTelur::with('kandang')
+            ->where('karyawans_id', $karyawan->id ?? 0);
 
         // Filter tanggal dari
         if ($request->filled('tanggal_dari')) {
