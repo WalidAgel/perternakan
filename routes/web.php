@@ -62,6 +62,15 @@ Route::prefix('karyawan')->name('karyawan.')->middleware('auth')->group(function
     Route::delete('/produksi/{id}', [KaryawanProduksiTelurController::class, 'destroy'])
         ->name('produksi.destroy');
 
+    // Penggunaan Pakan
+    Route::get('/penggunaan-pakan', [App\Http\Controllers\Karyawan\PenggunaanPakanController::class, 'index'])->name('penggunaan-pakan.index');
+    Route::get('/penggunaan-pakan/create', [App\Http\Controllers\Karyawan\PenggunaanPakanController::class, 'create'])->name('penggunaan-pakan.create');
+    Route::post('/penggunaan-pakan', [App\Http\Controllers\Karyawan\PenggunaanPakanController::class, 'store'])->name('penggunaan-pakan.store');
+    Route::get('/penggunaan-pakan/{penggunaanPakan}/edit', [App\Http\Controllers\Karyawan\PenggunaanPakanController::class, 'edit'])->name('penggunaan-pakan.edit');
+    Route::put('/penggunaan-pakan/{penggunaanPakan}', [App\Http\Controllers\Karyawan\PenggunaanPakanController::class, 'update'])->name('penggunaan-pakan.update');
+    Route::delete('/penggunaan-pakan/{penggunaanPakan}', [App\Http\Controllers\Karyawan\PenggunaanPakanController::class, 'destroy'])->name('penggunaan-pakan.destroy');
+    Route::get('/riwayat/penggunaan-pakan', [App\Http\Controllers\Karyawan\PenggunaanPakanController::class, 'riwayat'])->name('riwayat.penggunaan-pakan');
+
     // Input Pengeluaran
     Route::get('/pengeluaran', [PengeluaranController::class, 'index'])->name('pengeluaran.index');
     Route::get('/pengeluaran/create', [PengeluaranController::class, 'create'])->name('pengeluaran.create');

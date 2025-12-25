@@ -99,6 +99,16 @@
                 </svg>
                 <span>Pengeluaran</span>
             </a>
+            
+            <!-- PENGGUNAAN PAKAN -->
+            <a href="{{ route('karyawan.penggunaan-pakan.index') }}"
+                class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-blue-50 hover:text-blue-600 transition {{ request()->routeIs('karyawan.penggunaan-pakan.*') ? 'bg-blue-100 text-blue-600' : '' }}">
+                <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                </svg>
+                <span>Penggunaan Pakan</span>
+            </a>
 
             <!-- PROFIL -->
             <a href="{{ route('karyawan.profil.index') }}"
