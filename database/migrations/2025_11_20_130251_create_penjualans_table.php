@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('penjualans', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('produks_id')->nullable()->constrained('produksi_telurs')->nullOnDelete();
+            // $table->foreignId('produks_id')->nullable()->constrained('produksi_telurs')->nullOnDelete();
             $table->date('tanggal');
             $table->decimal('jumlah_terjual', 12, 2);
             $table->decimal('harga_per_kg', 15, 2);

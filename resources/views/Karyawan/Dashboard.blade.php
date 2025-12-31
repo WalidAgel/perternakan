@@ -17,6 +17,35 @@
     <!-- WIDGET -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
 
+        <!-- Total Produksi Telur -->
+        <div class="bg-purple-600 rounded-2xl p-6 text-white shadow-lg">
+            <p class="text-sm opacity-80">Total Produksi Telur</p>
+            <p class="text-3xl font-bold mt-2">
+                {{ number_format($totalProduksiTelur ?? 0, 0) }} Butir
+            </p>
+        </div>
+
+        <!-- Produksi Hari Ini -->
+        <div class="bg-orange-500 rounded-2xl p-6 text-white shadow-lg">
+            <p class="text-sm opacity-80">Produksi Hari Ini</p>
+            <p class="text-3xl font-bold mt-2">
+                {{ number_format($produksiHariIni ?? 0, 0) }} Butir
+            </p>
+        </div>
+
+        <!-- Produksi Bulan Ini -->
+        <div class="bg-pink-500 rounded-2xl p-6 text-white shadow-lg">
+            <p class="text-sm opacity-80">Produksi Bulan Ini</p>
+            <p class="text-3xl font-bold mt-2">
+                {{ number_format($produksiBulanIni ?? 0, 0) }} Butir
+            </p>
+        </div>
+
+    </div>
+
+    <!-- WIDGET PENGGUNAAN PAKAN -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+
         <!-- Total Pakan -->
         <div class="bg-green-600 rounded-2xl p-6 text-white shadow-lg">
             <p class="text-sm opacity-80">Total Penggunaan Pakan</p>

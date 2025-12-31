@@ -37,20 +37,32 @@ class KaryawanController extends Controller
         // ===============================
 
         // Total penggunaan pakan (semua waktu)
-        $totalPenggunaanPakan = PenggunaanPakan::where('karyawans_id', $karyawan->id)
-            ->sum('jumlah');
+        $totalPenggunaanPakan = PenggunaanPakan::where('karyawans_id', $karyawan->id)->sum('jumlah');
 
         // Total transaksi penggunaan pakan
-        $totalTransaksi = PenggunaanPakan::where('karyawans_id', $karyawan->id)
-            ->count();
+        $totalTransaksi = PenggunaanPakan::where('karyawans_id', $karyawan->id)->count();
 
         // Penggunaan pakan hari ini
-        $penggunaanHariIni = PenggunaanPakan::where('karyawans_id', $karyawan->id)
-            ->whereDate('tanggal', Carbon::today())
-            ->sum('jumlah');
+        $penggunaanHariIni = PenggunaanPakan::where('karyawans_id', $karyawan->id)->whereDate('tanggal', Carbon::today())->sum('jumlah');
 
         // Penggunaan pakan bulan ini
         $penggunaanBulanIni = PenggunaanPakan::where('karyawans_id', $karyawan->id)
+            ->whereMonth('tanggal', Carbon::now()->month)
+            ->whereYear('tanggal', Carbon::now()->year)
+            ->sum('jumlah');
+
+        // ===============================
+        // STATISTIK PRODUKSI TELUR
+        // ===============================
+
+        // Total produksi telur (semua waktu)
+        $totalProduksiTelur = \App\Models\ProduksiTelur::where('karyawans_id', $karyawan->id)->sum('jumlah');
+
+        // Produksi telur hari ini
+        $produksiHariIni = \App\Models\ProduksiTelur::where('karyawans_id', $karyawan->id)->whereDate('tanggal', Carbon::today())->sum('jumlah');
+
+        // Produksi telur bulan ini
+        $produksiBulanIni = \App\Models\ProduksiTelur::where('karyawans_id', $karyawan->id)
             ->whereMonth('tanggal', Carbon::now()->month)
             ->whereYear('tanggal', Carbon::now()->year)
             ->sum('jumlah');
@@ -64,13 +76,6 @@ class KaryawanController extends Controller
             ->limit(5)
             ->get();
 
-        return view('karyawan.dashboard', compact(
-            'karyawan',
-            'totalPenggunaanPakan',
-            'totalTransaksi',
-            'penggunaanHariIni',
-            'penggunaanBulanIni',
-            'penggunaanTerbaru'
-        ));
+        return view('karyawan.dashboard', compact('karyawan', 'totalPenggunaanPakan', 'totalTransaksi', 'penggunaanHariIni', 'penggunaanBulanIni', 'totalProduksiTelur', 'produksiHariIni', 'produksiBulanIni', 'penggunaanTerbaru'));
     }
 }
