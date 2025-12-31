@@ -50,7 +50,7 @@
                 <option value="">-- Pilih Kandang --</option>
                 @foreach($kandangs as $kandang)
                     <option value="{{ $kandang->id }}"
-                        {{ ($penjualan->produksiTelur && $penjualan->produksiTelur->kandang_id == $kandang->id) ? 'selected' : '' }}>
+                        {{ $penjualan->kandang_id == $kandang->id ? 'selected' : '' }}>
                         {{ $kandang->nama_kandang }}
                     </option>
                 @endforeach

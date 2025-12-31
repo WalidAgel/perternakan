@@ -118,10 +118,10 @@
     <div class="info-box">
         <strong>Filter yang Diterapkan:</strong>
         @if($tanggalDari)
-            <p>📅 Tanggal Dari: {{ \Carbon\Carbon::parse($tanggalDari)->format('d/m/Y') }}</p>
+            <p>Tanggal Dari: {{ \Carbon\Carbon::parse($tanggalDari)->format('d/m/Y') }}</p>
         @endif
         @if($tanggalSampai)
-            <p>📅 Tanggal Sampai: {{ \Carbon\Carbon::parse($tanggalSampai)->format('d/m/Y') }}</p>
+            <p>Tanggal Sampai: {{ \Carbon\Carbon::parse($tanggalSampai)->format('d/m/Y') }}</p>
         @endif
     </div>
     @endif
@@ -131,9 +131,9 @@
             <tr>
                 <th width="5%" class="text-center">No</th>
                 <th width="12%">Tanggal</th>
-                <th width="15%" class="text-center">Produksi</th>
+                <th width="18%">Kandang</th>
                 <th width="15%" class="text-right">Jumlah Terjual (Kg)</th>
-                <th width="15%" class="text-right">Harga/Kg (Rp)</th>
+                <th width="18%" class="text-right">Harga/Kg (Rp)</th>
                 <th width="18%" class="text-right">Total (Rp)</th>
             </tr>
         </thead>
@@ -142,9 +142,9 @@
             <tr>
                 <td class="text-center">{{ $index + 1 }}</td>
                 <td>{{ \Carbon\Carbon::parse($item->tanggal)->format('d/m/Y') }}</td>
-                <td class="text-center">
-                    @if($item->produksiTelur)
-                        Produksi #{{ $item->produksiTelur->id }}
+                <td>
+                    @if($item->kandang)
+                        {{ $item->kandang->nama_kandang }}
                     @else
                         -
                     @endif

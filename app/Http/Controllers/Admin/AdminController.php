@@ -109,7 +109,7 @@ class AdminController extends Controller
         // Data Tabel Terbaru
         $pengeluaranTerbaru = KategoriPengeluaran::with('kategori')->orderBy('created_at', 'desc')->limit(5)->get();
         $produksiTerbaru = ProduksiTelur::with('karyawan')->orderBy('tanggal', 'desc')->limit(5)->get();
-        $penjualanTerbaru = Penjualan::with('produksiTelur')->orderBy('tanggal', 'desc')->limit(5)->get();
+        $penjualanTerbaru = Penjualan::with('kandang')->orderBy('tanggal', 'desc')->limit(5)->get();
 
         return view('admin.Dashboard', compact(
             'produksiHariIni', 'perubahanProduksi',

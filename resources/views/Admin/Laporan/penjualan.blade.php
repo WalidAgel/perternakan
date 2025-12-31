@@ -5,24 +5,24 @@
 
     {{-- HEADER --}}
     <div>
-        <h1 class="text-3xl font-bold text-gray-800">💵 Laporan Penjualan</h1>
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-800">Laporan Penjualan</h1>
         <p class="text-gray-600 mt-2">Analisis dan monitoring pendapatan penjualan telur</p>
     </div>
 
     {{-- FILTER --}}
     <form method="GET" action="{{ route('admin.laporan.penjualan') }}"
-          class="grid grid-cols-1 md:grid-cols-3 gap-4 bg-white p-6 rounded-xl shadow">
+        class="grid grid-cols-1 md:grid-cols-3 gap-4 bg-white p-6 rounded-xl shadow">
 
         <div>
             <label class="text-sm font-semibold text-gray-700">Tanggal Dari</label>
             <input type="date" name="tanggal_dari" value="{{ request('tanggal_dari') }}"
-                   class="w-full mt-1 rounded-lg border-gray-300">
+                class="w-full mt-1 rounded-lg border-gray-300">
         </div>
 
         <div>
             <label class="text-sm font-semibold text-gray-700">Tanggal Sampai</label>
             <input type="date" name="tanggal_sampai" value="{{ request('tanggal_sampai') }}"
-                   class="w-full mt-1 rounded-lg border-gray-300">
+                class="w-full mt-1 rounded-lg border-gray-300">
         </div>
 
         <div class="flex items-end gap-2">
@@ -30,7 +30,7 @@
                 Filter
             </button>
             <a href="{{ route('admin.laporan.penjualan') }}"
-               class="bg-gray-500 text-white px-4 py-2 rounded-lg">
+                class="bg-gray-500 text-white px-4 py-2 rounded-lg">
                 ↻
             </a>
         </div>
@@ -90,7 +90,13 @@
                         {{ \Carbon\Carbon::parse($item->tanggal)->format('d/m/Y') }}
                     </td>
                     <td class="p-4">
-                        Produksi #{{ optional($item->produksiTelur)->id ?? '-' }}
+                        @if($item->kandang)
+                        <span class="px-3 py-1 bg-orange-100 text-orange-700 rounded-lg text-sm font-semibold">
+                            {{ $item->kandang->nama_kandang }}
+                        </span>
+                        @else
+                        <span class="text-gray-400">-</span>
+                        @endif
                     </td>
                     <td class="p-4 text-orange-600 font-semibold">
                         {{ number_format($item->jumlah_terjual, 2) }} Kg

@@ -81,7 +81,7 @@
     <div class="mb-4">
         <a href="{{ route('admin.laporan.pengeluaran.pdf', request()->all()) }}"
            class="inline-block px-5 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg font-semibold shadow">
-            📄 Export PDF
+            Export PDF
         </a>
     </div>
 

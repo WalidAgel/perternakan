@@ -123,13 +123,13 @@
     <div class="info-box">
         <strong>Filter yang Diterapkan:</strong>
         @if($tanggalDari)
-            <p>📅 Tanggal Dari: {{ \Carbon\Carbon::parse($tanggalDari)->format('d/m/Y') }}</p>
+            <p>Tanggal Dari: {{ \Carbon\Carbon::parse($tanggalDari)->format('d/m/Y') }}</p>
         @endif
         @if($tanggalSampai)
-            <p>📅 Tanggal Sampai: {{ \Carbon\Carbon::parse($tanggalSampai)->format('d/m/Y') }}</p>
+            <p>Tanggal Sampai: {{ \Carbon\Carbon::parse($tanggalSampai)->format('d/m/Y') }}</p>
         @endif
         @if($kategoriId)
-            <p>🏷️ Kategori: {{ $pengeluaran->first()->kategori->nama_kategori ?? '-' }}</p>
+            <p>Kategori: {{ $pengeluaran->first()->kategori->nama_kategori ?? '-' }}</p>
         @endif
     </div>
     @endif

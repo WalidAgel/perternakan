@@ -9,11 +9,13 @@ class Penjualan extends Model
 {
     use HasFactory;
 
+    protected $table = 'penjualans';
+
     protected $fillable = [
-        'produks_id',
+        'kandang_id',
         'tanggal',
         'harga_per_kg',
-        'jumlah_terjual', // Sesuai dengan migration
+        'jumlah_terjual',
         'total'
     ];
 
@@ -24,9 +26,9 @@ class Penjualan extends Model
         'total' => 'decimal:2'
     ];
 
-    // Sesuaikan nama method dengan penggunaan di view
-    public function produksiTelur()
+    // Relasi ke kandang
+    public function kandang()
     {
-        return $this->belongsTo(ProduksiTelur::class, 'produks_id');
+        return $this->belongsTo(Kandang::class, 'kandang_id');
     }
 }

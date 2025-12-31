@@ -64,15 +64,10 @@
                             </td>
 
                             <td class="p-3">
-                                @if ($row->produksiTelur && $row->produksiTelur->kandang)
+                                @if ($row->kandang)
                                     <span class="px-3 py-1 bg-orange-100 text-orange-700 rounded-lg text-sm font-semibold">
-                                        {{ $row->produksiTelur->kandang->nama_kandang }}
+                                        {{ $row->kandang->nama_kandang }}
                                     </span>
-                                    <br>
-                                    <small class="text-gray-500 text-xs mt-1 block">
-                                        Produksi: {{ \Carbon\Carbon::parse($row->produksiTelur->tanggal)->format('d M Y') }}
-                                        | {{ number_format($row->produksiTelur->jumlah) }} butir
-                                    </small>
                                 @else
                                     <span class="text-red-600 text-sm">Tidak ada data</span>
                                 @endif
