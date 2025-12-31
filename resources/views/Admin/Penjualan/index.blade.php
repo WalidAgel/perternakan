@@ -22,13 +22,13 @@
                 </div>
 
                 <div>
-                    <label class="text-sm font-semibold">Produksi</label>
-                    <select name="produksi_id"
+                    <label class="text-sm font-semibold">Kandang</label>
+                    <select name="kandang_id"
                         class="w-full mt-1 border-gray-300 rounded-lg p-2 bg-white focus:ring focus:ring-orange-200">
-                        <option value="">-- Pilih Produksi --</option>
-                        @foreach ($produksiList as $p)
-                            <option value="{{ $p->id }}" {{ request('produksi_id') == $p->id ? 'selected' : '' }}>
-                                {{ $p->kandang->nama_kandang ?? 'Kandang' }} - {{ \Carbon\Carbon::parse($p->tanggal)->format('d M Y') }}
+                        <option value="">-- Pilih Kandang --</option>
+                        @foreach ($kandangs as $kandang)
+                            <option value="{{ $kandang->id }}" {{ request('kandang_id') == $kandang->id ? 'selected' : '' }}>
+                                {{ $kandang->nama_kandang }}
                             </option>
                         @endforeach
                     </select>

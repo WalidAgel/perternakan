@@ -2,7 +2,7 @@
 
 @section('content')
 
-{{-- HEADER HIJAU --}}
+{{-- HEADER --}}
 <div class="mb-8">
     <div class="bg-orange-600 rounded-2xl px-8 py-6 flex items-center justify-between shadow-lg">
         <div>
@@ -39,23 +39,23 @@
         @csrf
         @method('PUT')
 
-        {{-- PRODUKSI --}}
+        {{-- KANDANG --}}
         <div>
             <label class="block font-semibold text-gray-700 mb-2">
-                Pilih Produksi <span class="text-red-500">*</span>
+                Pilih Kandang <span class="text-red-500">*</span>
             </label>
-            <select name="produks_id" required
+            <select name="kandang_id" required
                 class="w-full px-4 py-3 rounded-xl border border-gray-300
                        focus:ring-2 focus:ring-orange-500 focus:border-orange-500">
-                <option value="">-- Pilih Produksi --</option>
-                @foreach($produksi as $p)
-                    <option value="{{ $p->id }}"
-                        {{ $p->id == $penjualan->produks_id ? 'selected' : '' }}>
-                        Produksi #{{ $p->id }} - {{ $p->tanggal }} ({{ $p->jumlah }} butir)
+                <option value="">-- Pilih Kandang --</option>
+                @foreach($kandangs as $kandang)
+                    <option value="{{ $kandang->id }}"
+                        {{ ($penjualan->produksiTelur && $penjualan->produksiTelur->kandang_id == $kandang->id) ? 'selected' : '' }}>
+                        {{ $kandang->nama_kandang }}
                     </option>
                 @endforeach
             </select>
-            @error('produks_id')
+            @error('kandang_id')
                 <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
             @enderror
         </div>
@@ -73,6 +73,9 @@
                     required
                     class="w-full px-4 py-3 rounded-xl border border-gray-300
                            focus:ring-2 focus:ring-orange-500 focus:border-orange-500">
+                @error('tanggal')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
             </div>
 
             {{-- JUMLAH TERJUAL --}}
@@ -85,6 +88,9 @@
                     step="0.01" min="0" required
                     class="w-full px-4 py-3 rounded-xl border border-gray-300
                            focus:ring-2 focus:ring-orange-500 focus:border-orange-500">
+                @error('jumlah_terjual')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
             </div>
 
             {{-- HARGA --}}
@@ -97,6 +103,9 @@
                     step="0.01" min="0" required
                     class="w-full px-4 py-3 rounded-xl border border-gray-300
                            focus:ring-2 focus:ring-orange-500 focus:border-orange-500">
+                @error('harga_per_kg')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
             </div>
 
             {{-- TOTAL --}}
@@ -114,7 +123,8 @@
         {{-- INFO --}}
         <div class="bg-orange-50 border-l-4 border-orange-500 rounded-lg p-4">
             <p class="text-sm text-orange-800">
-                Total harga akan dihitung otomatis berdasarkan harga dan jumlah terjual.
+                <strong>Catatan:</strong> Total harga akan dihitung otomatis berdasarkan harga per kg dan jumlah terjual. 
+                Sistem akan mencari data produksi dari kandang yang dipilih pada tanggal tersebut.
             </p>
         </div>
 
@@ -138,7 +148,7 @@
     </form>
 </div>
 
-{{-- SCRIPT (TIDAK DIUBAH) --}}
+{{-- SCRIPT --}}
 <script>
 function calculateTotal() {
     const harga = parseFloat(document.getElementById('harga_per_kg').value) || 0;

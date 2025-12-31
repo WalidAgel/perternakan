@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -17,16 +18,25 @@
         {{-- MAIN CONTENT --}}
         <main class="flex-1 w-full md:w-auto overflow-x-hidden pt-16 md:pt-0">
             <div class="p-3 md:p-6 lg:p-8">
+
+                {{-- ALERT (TARUH DI SINI) --}}
+                @include('components.alert')
+
+                {{-- ISI HALAMAN --}}
                 @yield('content')
+
             </div>
         </main>
 
     </div>
 
     <script src="https://unpkg.com/feather-icons"></script>
-    <script>feather.replace();</script>
+    <script>
+        feather.replace();
+    </script>
     @stack('scripts')
 </body>
+
 </html>
 
 <!-- 3. DASHBOARD ADMIN - Mobile Responsive -->
@@ -46,37 +56,42 @@
 
 <!-- 4. CSS UTILITIES - Tambahkan ke app.css jika diperlukan -->
 <style>
-/* Prevent horizontal scroll */
-body {
-    overflow-x: hidden;
-}
-
-/* Mobile-first responsive utilities */
-@media (max-width: 768px) {
-    /* Smaller text on mobile */
-    .text-responsive {
-        font-size: 0.875rem;
+    /* Prevent horizontal scroll */
+    body {
+        overflow-x: hidden;
     }
 
-    /* Stack buttons vertically on mobile */
-    .btn-group-mobile {
-        flex-direction: column;
+    /* Mobile-first responsive utilities */
+    @media (max-width: 768px) {
+
+        /* Smaller text on mobile */
+        .text-responsive {
+            font-size: 0.875rem;
+        }
+
+        /* Stack buttons vertically on mobile */
+        .btn-group-mobile {
+            flex-direction: column;
+        }
+
+        /* Full width inputs on mobile */
+        input,
+        select,
+        textarea {
+            font-size: 16px;
+            /* Prevent zoom on iOS */
+        }
     }
 
-    /* Full width inputs on mobile */
-    input, select, textarea {
-        font-size: 16px; /* Prevent zoom on iOS */
+    /* Touch-friendly tap targets */
+    button,
+    a {
+        min-height: 44px;
+        min-width: 44px;
     }
-}
 
-/* Touch-friendly tap targets */
-button, a {
-    min-height: 44px;
-    min-width: 44px;
-}
-
-/* Smooth scrolling */
-html {
-    scroll-behavior: smooth;
-}
+    /* Smooth scrolling */
+    html {
+        scroll-behavior: smooth;
+    }
 </style>

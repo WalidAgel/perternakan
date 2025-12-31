@@ -5,46 +5,41 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Penjualan;
 use App\Models\ProduksiTelur;
+use App\Models\Kandang;
 use Illuminate\Http\Request;
 
 class PenjualanController extends Controller
 {
     public function index(Request $request)
     {
-        // Load relasi produksiTelur (sesuai nama method di model)
         $query = Penjualan::with('produksiTelur');
 
-        // Filter berdasarkan tanggal
         if ($request->filled('tanggal')) {
             $query->whereDate('tanggal', $request->tanggal);
         }
 
-        // Filter berdasarkan produksi
-        if ($request->filled('produksi_id')) {
-            $query->where('produks_id', $request->produksi_id);
+        if ($request->filled('kandang_id')) {
+            $query->whereHas('produksiTelur', function($q) use ($request) {
+                $q->where('kandang_id', $request->kandang_id);
+            });
         }
 
         $penjualan = $query->latest('tanggal')->paginate(10);
+        $kandangs = Kandang::where('status', 'aktif')->get();
 
-        // Kirim data produksi telur untuk dropdown filter
-        $produksiList = ProduksiTelur::orderBy('tanggal', 'desc')->get();
-
-        return view('admin.penjualan.index', compact('penjualan', 'produksiList'));
+        return view('admin.penjualan.index', compact('penjualan', 'kandangs'));
     }
 
     public function create()
     {
-        $produksi = ProduksiTelur::with('karyawan')
-            ->orderBy('tanggal', 'desc')
-            ->get();
-
-        return view('admin.penjualan.create', compact('produksi'));
+        $kandangs = Kandang::where('status', 'aktif')->get();
+        return view('admin.penjualan.create', compact('kandangs'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'produks_id' => 'required|exists:produksi_telurs,id',
+            'kandang_id' => 'required|exists:kandangs,id',
             'tanggal' => 'required|date',
             'harga_per_kg' => 'required|numeric|min:0',
             'qty' => 'required|array|min:1',
@@ -55,11 +50,20 @@ class PenjualanController extends Controller
         // Hitung total qty
         $totalQty = array_sum($request->qty);
 
+        // Cari atau buat produksi telur untuk kandang dan tanggal tersebut
+        $produksi = ProduksiTelur::where('kandang_id', $request->kandang_id)
+            ->whereDate('tanggal', $request->tanggal)
+            ->first();
+
+        if (!$produksi) {
+            return back()->withErrors(['kandang_id' => 'Tidak ada data produksi untuk kandang ini pada tanggal tersebut.'])->withInput();
+        }
+
         Penjualan::create([
-            'produks_id' => $request->produks_id,
+            'produks_id' => $produksi->id,
             'tanggal' => $request->tanggal,
             'harga_per_kg' => $request->harga_per_kg,
-            'jumlah_terjual' => $totalQty, // Sesuai kolom database
+            'jumlah_terjual' => $totalQty,
             'total' => $request->total,
         ]);
 
@@ -70,11 +74,9 @@ class PenjualanController extends Controller
     public function edit($id)
     {
         $penjualan = Penjualan::findOrFail($id);
-        $produksi = ProduksiTelur::with('karyawan')
-            ->orderBy('tanggal', 'desc')
-            ->get();
+        $kandangs = Kandang::where('status', 'aktif')->get();
 
-        return view('admin.penjualan.edit', compact('penjualan', 'produksi'));
+        return view('admin.penjualan.edit', compact('penjualan', 'kandangs'));
     }
 
     public function update(Request $request, $id)
@@ -82,15 +84,24 @@ class PenjualanController extends Controller
         $penjualan = Penjualan::findOrFail($id);
 
         $request->validate([
-            'produks_id' => 'required|exists:produksi_telurs,id',
+            'kandang_id' => 'required|exists:kandangs,id',
             'tanggal' => 'required|date',
             'harga_per_kg' => 'required|numeric|min:0',
             'jumlah_terjual' => 'required|numeric|min:0',
             'total' => 'required|numeric|min:0'
         ]);
 
+        // Cari produksi telur berdasarkan kandang dan tanggal
+        $produksi = ProduksiTelur::where('kandang_id', $request->kandang_id)
+            ->whereDate('tanggal', $request->tanggal)
+            ->first();
+
+        if (!$produksi) {
+            return back()->withErrors(['kandang_id' => 'Tidak ada data produksi untuk kandang ini pada tanggal tersebut.'])->withInput();
+        }
+
         $penjualan->update([
-            'produks_id' => $request->produks_id,
+            'produks_id' => $produksi->id,
             'tanggal' => $request->tanggal,
             'harga_per_kg' => $request->harga_per_kg,
             'jumlah_terjual' => $request->jumlah_terjual,
